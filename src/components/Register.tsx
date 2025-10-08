@@ -2,6 +2,8 @@
 import { useState, FormEvent } from "react";
 import { registerUser, RegisterData } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+// import { toast } from "react-hot-toast";
+
 
 
 const Register = () => {
@@ -12,13 +14,14 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
+    role: "client",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = ( e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -30,6 +33,7 @@ const Register = () => {
 
     try {
       const response = await registerUser(formData);
+      //  toast.success("Registration successful!");
       setSuccess(response.message);
 
       // Optionally redirect to login page
@@ -51,6 +55,9 @@ const Register = () => {
       {success && <div className="text-green-600 mb-2">{success}</div>}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <h2 className="text-2xl font-semibold mb-6 text-center">
+          Create Account
+        </h2>
         <input
           type="text"
           name="name"
@@ -58,17 +65,17 @@ const Register = () => {
           value={formData.name}
           onChange={handleChange}
           required
-          className="p-2 border rounded"
+          className="border border-gray-300 p-2 mb-3 w-full rounded-md"
         />
 
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={formData.email}
           onChange={handleChange}
           required
-          className="p-2 border rounded"
+          className="border border-gray-300 p-2 mb-3 w-full rounded-md"
         />
 
         <input
@@ -80,6 +87,22 @@ const Register = () => {
           required
           className="p-2 border rounded"
         />
+
+        <select  name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className="border border-gray-300 p-2 mb-4 w-full rounded-md"
+          required>
+
+             <option value="">Select Role</option>
+        <option value="client">Client</option>
+          <option value="nutritionist">Nutritionist</option>
+          <option value="admin">Admin</option>
+          </select>
+       
+        
+        
+       
 
         <button
           type="submit"

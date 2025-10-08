@@ -5,6 +5,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
+  role: "admin" | "client" | "nutritionist";
 }
 
 export interface RegisterResponse {

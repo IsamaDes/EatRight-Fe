@@ -5,17 +5,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./utils/AuthContext";
 
-// Pages
-import Register from "./pages/Register";
-import Login from "./pages/LoginPage";
-import AdminDashboard from "./pages/AdminDashboard";
-import ClientDashboard from "./pages/ClientDashboard";
-import NutritionistDashboard from "./pages/NutritionistDashboard";
+import AdminDashboard from "./pages/AdminPages/index";
+import ClientDashboard from "./pages/ClientPages/index";
+import NutritionistDashboard from "./pages/NutritionistPages/index";
 
-// Layout or 404 page
-import NotFound from "./pages/NotFound";
+import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 
@@ -38,6 +34,7 @@ const App = () => {
       <Router>
         <Routes>
           {/* Auth routes */}
+          <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
 
@@ -70,9 +67,6 @@ const App = () => {
               </ProtectedRoute>
             }
           />
-
-          {/* Fallback */}
-          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </AuthProvider>
