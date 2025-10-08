@@ -1,35 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function App() {
-  const [count, setCount] = useState(0)
+// Pages
+import Register from "./pages/Register";
+import Login from "./pages/LoginPage";
+import AdminDashboard from "./pages/AdminDashboard";
+import ClientDashboard from "./pages/ClientDashboard";
+import NutritionistDashboard from "./pages/NutritionistDashboard";
 
+// Layout or 404 page
+import NotFound from "./pages/NotFound";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+
+// Protected Route wrapper
+const ProtectedRoute = ({ children, roles }) => {
+  const { token } = useAuth();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (!token) return <Navigate to="/login" replace />;
+
+  if (roles && !roles.includes(user.role))
+    return <Navigate to="/login" replace />;
+
+  return children;
+};
+
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Auth routes */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-export default App
+          {/* Admin routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Client routes */}
+          <Route
+            path="/client/*"
+            element={
+              <ProtectedRoute roles={["client"]}>
+                <ClientDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Nutritionist routes */}
+          <Route
+            path="/nutritionist/*"
+            element={
+              <ProtectedRoute roles={["nutritionist"]}>
+                <NutritionistDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;

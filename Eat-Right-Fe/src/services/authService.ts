@@ -1,20 +1,27 @@
 // src/services/authService.ts
 import axiosInstance from "../utils/AxiosInstance";
 
-interface RegisterData {
+export interface RegisterData {
   name: string;
   email: string;
   password: string;
 }
+
+export interface RegisterResponse {
+  message: string;
+  verificationToken: string;
+  user?: { name: string; email: string; role: string };
+}
+
 
 interface LoginData {
   email: string;
   password: string;
 }
 
-export const registerUser = async (data: RegisterData) => {
+export const registerUser = async (data: RegisterData): Promise<RegisterResponse> => {
   try {
-    const response = await axiosInstance.post("/auth/register", data);
+    const response = await axiosInstance.post<RegisterResponse>("/auth/register", data);
     return response.data;
   } catch (error: any) {
     console.error("Register error:", error.response?.data || error.message);
