@@ -1,11 +1,22 @@
-import React from 'react'
-import ClientDashboard from "../../components/client"
+import { useNavigate } from "react-router-dom";
 
 
-function index() {
+
+const ClientDashboard = () => {
+  const navigate = useNavigate();
+  const handleClientNavigate = () => {
+    navigate("/");
+  }
   return (
-    <ClientDashboard/>
-  )
-}
+    <div>
+      {/* optional navbar/sidebar here */}
+      <div>Welcome to ClientPage</div>
+      <button onClick={handleClientNavigate} className="bg-blue-500 rounded-md">
+       Client Da
+       
+      </button>
+    </div>
+  );
+};
 
-export default index
+export default ClientDashboard;
