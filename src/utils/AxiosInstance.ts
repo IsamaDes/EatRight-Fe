@@ -1,9 +1,7 @@
 import axios from 'axios';
 
- const baseURL = import.meta.env.VITE_API_BASE_URL;
-
 const axiosInstance = axios.create({
-  baseURL,
+  baseURL: "https://eat-right-be.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },

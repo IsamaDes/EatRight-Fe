@@ -1,5 +1,7 @@
 // src/services/authService.ts
+import Register from "../components/Register";
 import axiosInstance from "../utils/AxiosInstance";
+import logAxiosError from "../utils/LogAxiosError"
 
 export interface RegisterData {
   name: string;
@@ -25,7 +27,7 @@ export const registerUser = async (data: RegisterData): Promise<RegisterResponse
     const response = await axiosInstance.post<RegisterResponse>("/auth/register", data);
     return response.data;
   } catch (error: any) {
-    console.error("Register error:", error.response?.data || error.message);
+    logAxiosError(error, "REGISTER");
     throw error.response?.data || error;
   }
 };
@@ -35,7 +37,7 @@ export const loginUser = async (data: LoginData) => {
     const response = await axiosInstance.post("/auth/login", data);
     return response.data;
   } catch (error: any) {
-    console.error("Login error:", error.response?.data || error.message);
+    logAxiosError(error, "LOGIN");
     throw error.response?.data || error;
   }
 };
