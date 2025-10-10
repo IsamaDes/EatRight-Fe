@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
-import { useAuth } from "../utils/AuthContext";
 import healthyfood from "../assets/healthyfoodimg.jpg";
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
@@ -23,8 +22,13 @@ const Login = () => {
 
     try {
       const response = await loginUser({ email, password });
+      console.log(response)
       const userRole =  response.data.role;
+      const userName =  response.data.name;
       const token =  response.data.token
+       
+       localStorage.setItem("user_name", userName);
+       localStorage.setItem("user", JSON.stringify(response.data));
 
       setRole(userRole);
 

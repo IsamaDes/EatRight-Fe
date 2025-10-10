@@ -15,7 +15,6 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ClientDashboard from "./pages/ClientPages";
 import ProtectedRoute from "./utils/ProtectedRoutes";
-import ClientProfilePage from "./pages/ClientPages/ClientProfilePage";
 
 const App = () => {
   return (
