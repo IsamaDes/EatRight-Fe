@@ -34,6 +34,7 @@ export const registerUser = async (data: RegisterData): Promise<RegisterResponse
 
 export const loginUser = async (data: LoginData) => {
   try {
+    console.log("📡 Axios Base URL:", axiosInstance.defaults.baseURL);
     const response = await axiosInstance.post("/auth/login", data);
     return response.data;
   } catch (error: any) {
