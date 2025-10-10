@@ -35,13 +35,29 @@ const Login = () => {
       localStorage.setItem("role", userRole);
       localStorage.setItem("access_token", token);
 
-      if (userRole === "admin") navigate("/admin/dashboard");
-      else if (userRole === "nutritionist") navigate("/nutritionist/dashboard");
+      if (userRole === "admin") navigate("/admin");
+      else if (userRole === "nutritionist") navigate("/nutritionist");
       else if (userRole === "client") navigate("/client");
       else navigate("/login");
 
     } catch (err: any) {
+       if (err.response) {
+      // Server responded with a status code outside 2xx
+      console.error("Server error response:", {
+        data: err.response.data,
+        status: err.response.status,
+        headers: err.response.headers,
+      });
+      setError(`Server error: ${err.response.data?.message || err.response.status}`);
+    } else if (err.request) {
+      // Request was made but no response received
+      console.error("No response received:", err.request);
+      setError("No response from server. Please check your connection.");
+    } else {
+      // Something else happened
+      console.error("Login error:", err.message);
       setError(err.message || "Login failed");
+    }
     } finally {
       setLoading(false);
     }
