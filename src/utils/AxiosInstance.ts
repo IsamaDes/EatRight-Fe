@@ -1,13 +1,15 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Set organization ID globally for all requests
+// Set userID globally for all requests
 export const setUserContext = (userId: string) => {
   axiosInstance.defaults.params = {
     ...axiosInstance.defaults.params,

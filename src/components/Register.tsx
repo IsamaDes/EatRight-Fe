@@ -10,6 +10,7 @@ import { Eye, EyeOff, Loader2 } from 'lucide-react';
 const Register = () => {
 
   const navigate = useNavigate();
+
   
 
   const [formData, setFormData] = useState<RegisterData>({
@@ -51,6 +52,8 @@ const Register = () => {
       setLoading(false);
     }
   };
+
+  const handleLogin = () => navigate("/login");
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
@@ -130,9 +133,9 @@ const Register = () => {
 
       <p className="mt-6 text-center text-sm text-gray-500">
             Already have an account?{" "}
-            <a href="/login" className="text-green-600 font-medium hover:underline">
+            <button onClick={handleLogin} className="text-green-600 font-medium hover:underline">
               Login here
-            </a>
+            </button>
           </p>
     </div>
   );
