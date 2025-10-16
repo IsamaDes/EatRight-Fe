@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
-import healthyfood from "../assets/healthyfoodimg.jpg";
+import healthyfoodimg from "../assets/healthyfoodimg.jpg"
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
 
@@ -68,7 +68,7 @@ const Login = () => {
       {/* Left Section – Image */}
       <div className="relative w-full md:w-1/2 h-64 md:h-auto">
         <img
-          src={healthyfood}
+          src={healthyfoodimg}
           alt="Healthy food"
           className="absolute inset-0 w-full h-full object-cover"
         />

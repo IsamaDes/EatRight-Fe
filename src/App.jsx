@@ -1,15 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
-
-import AdminDashboard from "./pages/AdminPages/index";
-import NutritionistDashboard from "./pages/NutritionistPages/index";
-
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import ClientDashboard from "./pages/ClientPages";
-import ProtectedRoute from "./utils/ProtectedRoutes";
+import ClientProfile from "./pages/ClientPages/Profile";
+import AdminProfile from "./pages/AdminPages/Profile";
+import NutritionistProfile from "./pages/NutritionistPages/Profile";
+import MealPlanManager from "./pages/MealPlanManager";
+import Settings from "./components/Settings";
 
 const App = () => {
   return (
@@ -20,36 +19,11 @@ const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-
-          {/* Admin routes */}
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Client routes */}
-          <Route
-            path="/client/*"
-            element={
-              <ProtectedRoute roles={["client"]}>
-                <ClientDashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Nutritionist routes */}
-          <Route
-            path="/nutritionist/*"
-            element={
-              <ProtectedRoute roles={["nutritionist"]}>
-                <NutritionistDashboard />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/client" element={<ClientProfile />} />
+          <Route path="/admin" element={<AdminProfile />} />
+          <Route path="/nutritionist" element={<NutritionistProfile />} />
+          <Route path="/meal-plan" element={<MealPlanManager />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
     </AuthProvider>
