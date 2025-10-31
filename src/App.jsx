@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./utils/AuthContext";
 import HomePage from "./pages/HomePage";
@@ -6,8 +5,8 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ClientProfile from "./pages/ClientPages/Profile";
 import AdminProfile from "./pages/AdminPages/Profile";
-import NutritionistProfile from "./pages/nutritionistPages/Profile";
-import MealPlanManager from "./pages/mealPlanManager";
+import NutritionistProfile from "./pages/NutritionistPages/Profile";
+import MealPlanManager from "./pages/MealPlanManager";
 import Settings from "./components/Settings";
 import UserProfile from "./pages/UserProfile";
 
