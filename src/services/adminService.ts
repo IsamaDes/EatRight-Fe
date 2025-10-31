@@ -30,4 +30,11 @@ export const getUserById = async (id?: string) => {
     throw error.response?.data || error;
   }
 };
+export const assignNutritionist = async (clientId: string, nutritionistId: string) => {
+  const response = await axiosInstance.patch(`/admin/assign-nutritionist`, {
+    clientId,
+    nutritionistId,
+  });
+  return response.data;
+};
 

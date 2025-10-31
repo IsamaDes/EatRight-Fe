@@ -1,158 +1,172 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import { getAdminDashboard } from "../../services/adminService";
-import { useNavigate } from "react-router-dom";
-import { User } from "../../types/User";
-
-interface DashboardCounts {
-  clients: number;
-  admins: number;
-  nutritionists: number;
-}
-
-interface LatestClient {
-  _id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-}
+import { getAdminDashboard, assignNutritionist } from "../../services/adminService";
 
 interface UserData {
   _id: string;
   name: string;
   email: string;
   createdAt: string;
-  assignedNutritionist?: string;
+  assignedNutritionist?: string | null;
 }
-
 
 interface DashboardData {
-  total: DashboardCounts;
-  latestClients: LatestClient[];
-  clients: UserData[],
-  nutritionist: UserData[],
-  admin: UserData[],
-
+  total: { clients: number; admins: number; nutritionists: number };
+  clients: UserData[];
+  nutritionist: UserData[];
+  admin: UserData[];
 }
 
-export default function AdminProfile() {
-  const navigate = useNavigate();
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+export default function AdminDashboard() {
+  const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  
   const [error, setError] = useState<string | null>(null);
-
-   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const [modalList, setModalList] = useState<UserData[]>([]);
+  const [selectedClient, setSelectedClient] = useState<UserData | null>(null);
+  const [selectedNutritionist, setSelectedNutritionist] = useState<UserData | null>(null);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const fetchDashboard = async () => {
+    (async () => {
       try {
-        setLoading(true);
-        const response = await getAdminDashboard();
-        console.log("Admis dashboard response", response)
-        setDashboardData(response);
-        setUser(response);
-      } catch (err: any) {
-        console.error(" Failed to fetch dashboard:", err);
-        setError("Failed to load dashboard data");
+        const res = await getAdminDashboard();
+        setData(res);
+      } catch {
+        setError("Failed to load dashboard");
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchDashboard();
+    })();
   }, []);
 
-  // Handle UI states
-  if (loading) return <p className="p-6 text-gray-600">Loading dashboard...</p>;
+  const handleAssign = async () => {
+    if (!selectedClient || !selectedNutritionist) {
+      setMessage("Select both a client and a nutritionist.");
+      return;
+    }
+    try {
+      setMessage("Assigning...");
+      await assignNutritionist(selectedClient._id, selectedNutritionist._id);
+      setMessage(`✅ Assigned ${selectedNutritionist.name} to ${selectedClient.name}`);
+      setSelectedClient(null);
+      setSelectedNutritionist(null);
+    } catch {
+      setMessage("❌ Failed to assign nutritionist.");
+    }
+  };
+
+  if (loading) return <p className="p-6">Loading...</p>;
   if (error) return <p className="p-6 text-red-500">{error}</p>;
-  if (!dashboardData)
-    return <p className="p-6 text-gray-600">No dashboard data available.</p>;
-
-  const { total, latestClients, clients, admin, nutritionist } = dashboardData;
-
- const handleCardClick = (section: string, list: UserData[]) => {
- if(activeSection == section){
-  setActiveSection(null);
-  setModalList([]);
- } else {
-  setActiveSection(section);
-  setModalList(list);
- }
- }
+  if (!data) return <p className="p-6">No data available.</p>;
 
   return (
     <div className="p-6 space-y-8">
       <Header />
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <DashboardCard title="Total Clients" value={total.clients} color="bg-blue-500" onclick={() => handleCardClick("Clients", clients)}/>
-        <DashboardCard title="Total Admins" value={total.admins} color="bg-purple-500" onclick={() => handleCardClick("Admins", admin)}/>
-        <DashboardCard title="Nutritionists" value={total.nutritionists} color="bg-green-500" onclick={() => handleCardClick("Nutritionists", nutritionist)} />
-        <DashboardCard title="Latest Clients" value={latestClients.length} color="bg-orange-500" onclick={() => handleCardClick("Latest Clients", latestClients)} />
-      </section>
+      {/* Summary */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatCard title="Clients" value={data.total.clients} color="blue" />
+        <StatCard title="Admins" value={data.total.admins} color="purple" />
+        <StatCard title="Nutritionists" value={data.total.nutritionists} color="green" />
+      </div>
 
+      {/* Lists */}
+      <div className="">
+      <p>Create Appointment By Assigning a client to a nutritionist</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <UserList
+          title="Clients"
+          users={data.clients}
+          selectedId={selectedClient?._id}
+          onSelect={setSelectedClient}
+        />
+        <UserList
+          title="Nutritionists"
+          users={data.nutritionist}
+          selectedId={selectedNutritionist?._id}
+          onSelect={setSelectedNutritionist}
+        />
+      </div>
+</div>
+      {/* Action */}
+      <div className="bg-white p-4 rounded-lg shadow text-center">
+        <p className="mb-2 text-gray-600">
+          Selected Client:{" "}
+          <span className="font-semibold text-blue-600">
+            {selectedClient?.name || "None"}
+          </span>
+        </p>
+        <p className="mb-4 text-gray-600">
+          Selected Nutritionist:{" "}
+          <span className="font-semibold text-green-600">
+            {selectedNutritionist?.name || "None"}
+          </span>
+        </p>
 
+        <button
+          onClick={handleAssign}
+          disabled={!selectedClient || !selectedNutritionist}
+          className={`px-6 py-2 rounded-lg text-white font-medium ${
+            selectedClient && selectedNutritionist
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Assign Nutritionist
+        </button>
 
-       {activeSection && (
-        <div className="bg-white border rounded-lg shadow p-6 mt-4 animate-fadeIn">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-gray-800">{activeSection}</h3>
-            <button
-              onClick={() => setActiveSection(null)}
-              className="text-gray-500 hover:text-gray-700 font-medium"
-            >
-              Close ✕
-            </button>
-          </div>
-
-          {modalList?.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No records found.</p>
-          ) : (
-            <ul className="divide-y divide-gray-200 max-h-80 overflow-y-auto">
-              {modalList?.map((user) => (
-                <li key={user._id} 
-                onClick={() => navigate(`/users/${user?._id}`)}
-                className="py-3 flex justify-between items-center">
-                  <div>
-                    <p className="font-medium text-gray-800">{user.name}</p>
-                    <p className="text-sm text-gray-500">{user.email}</p>
-                  </div>
-                  <span className="text-xs text-gray-400">
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </span>
-                  
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
+        {message && <p className="mt-3 text-sm text-gray-700">{message}</p>}
+      </div>
     </div>
   );
 }
 
-
-
-
-
-interface CardProps {
-  title: string;
-  value: number;
-  color?: string;
-  onclick?: () => void
-}
-
-function DashboardCard({ title, value, color, onclick }: CardProps) {
+function StatCard({ title, value, color }: { title: string; value: number; color: string }) {
   return (
     <div
-    onClick={onclick}
-      className={`${color} text-white rounded-xl p-5 shadow hover:shadow-lg transition cursor-pointer`}
+      className={`bg-${color}-500 text-white p-4 rounded-xl shadow hover:shadow-lg transition`}
     >
       <h4 className="text-lg font-semibold">{title}</h4>
       <p className="text-3xl font-bold mt-2">{value}</p>
+    </div>
+  );
+}
+
+function UserList({
+  title,
+  users,
+  selectedId,
+  onSelect,
+}: {
+  title: string;
+  users: UserData[];
+  selectedId?: string;
+  onSelect: (user: UserData) => void;
+}) {
+  return (
+    <div className="bg-white rounded-lg shadow p-4">
+      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      <ul className="divide-y divide-gray-200 max-h-80 overflow-y-auto">
+        {users.length === 0 && (
+          <p className="text-gray-500 text-sm text-center py-4">No {title.toLowerCase()} found.</p>
+        )}
+        {users.map((u) => (
+          <li
+            key={u._id}
+            onClick={() => onSelect(u)}
+            className={`flex justify-between items-center p-2 rounded-md cursor-pointer ${
+              selectedId === u._id ? "bg-blue-100" : "hover:bg-gray-50"
+            }`}
+          >
+            <div>
+              <p className="font-medium text-gray-800">{u.name}</p>
+              <p className="text-sm text-gray-500">{u.email}</p>
+            </div>
+            <span className="text-xs text-gray-400">
+              {new Date(u.createdAt).toLocaleDateString()}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

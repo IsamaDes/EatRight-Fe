@@ -9,6 +9,7 @@ import Header from "./Header";
 const ClientProfile = () => {
 
     const [user, setUser] = useState<User | null>(null);
+     const [userId, setUserId] = useState("");
     const [loading, setLoading] = useState(true);
 
 
@@ -17,6 +18,7 @@ const ClientProfile = () => {
       try {
         const data = await getClientProfile();
         setUser(data);
+        setUserId(data._id)
       } catch (err) {
         console.error("Failed to fetch user", err);
       } finally {
@@ -97,7 +99,7 @@ const ClientProfile = () => {
 
 
      
-      <MealPlanManager user={user}/>
+      <MealPlanManager user={user} userId={userId}/>
     </div>
   );
 };

@@ -8,9 +8,10 @@ import {
 
 interface ClientProfileProps {
   user?: User | null;
+  userId: string | null;
 }
 
-export default function MealPlanManager({ user }: ClientProfileProps) {
+export default function MealPlanManager({ user, userId }: ClientProfileProps) {
   const [mealPlans, setMealPlans] = useState<MealPlanData[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<MealPlanData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -18,7 +19,7 @@ export default function MealPlanManager({ user }: ClientProfileProps) {
 
   // Controlled form data
   const [formData, setFormData] = useState<MealPlanData>({
-    clientId: "",
+    clientId: userId || "",
     clientName: "",
     nutritionistName: user?.name || "Admin User",
     healthGoal: "",

@@ -6,6 +6,7 @@ export default function UserProfile() {
   const { id } = useParams();
   console.log("user id", id)
   const [user, setUser] = useState<any>(null);
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -26,6 +27,8 @@ export default function UserProfile() {
       <p className="text-gray-500 text-sm mt-2">
         Joined: {new Date(user.createdAt).toLocaleDateString()}
       </p>
+
+     
     </div>
   );
 }
