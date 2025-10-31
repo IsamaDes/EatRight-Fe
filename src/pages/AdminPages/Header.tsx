@@ -7,7 +7,7 @@ const Header = () => {
          <div>
         <nav className="bg-purple-600 text-white p-4 mb-5 flex gap-4">
         <Link to="/admin">Profile</Link>
-        <Link to="/settings">Settings</Link>
+        <Link to="/settings">Settings</Link>        
       </nav>
 
 </div>

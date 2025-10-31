@@ -1,5 +1,4 @@
 // src/services/authService.ts
-import Register from "../components/Register";
 import axiosInstance from "../utils/AxiosInstance";
 import logAxiosError from "../utils/LogAxiosError"
 

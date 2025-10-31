@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from './Header'
-import MealPlanManager from '../MealPlanManager'
+import MealPlanManager from '../mealPlanManager'
 import { User } from '../../types/User'
 import { getNutritionistProfile } from '../../services/nutritionistService'
 

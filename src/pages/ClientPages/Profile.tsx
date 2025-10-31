@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { User } from "../../types/User"; 
 import { getClientProfile } from "../../services/clientService";
-import MealPlanManager from "../MealPlanManager";
+import MealPlanManager from "../mealPlanManager";
 import Header from "./Header";
 
 
