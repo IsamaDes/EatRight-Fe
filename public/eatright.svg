@@ -1,0 +1,10 @@
+<svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- White background -->
+  <rect width="400" height="120" fill="white"/>
+  
+  <!-- "Eat" in orange -->
+  <text x="20" y="75" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#FF6B35">Eat</text>
+  
+  <!-- "Right" in green -->
+  <text x="120" y="75" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#4CAF50">Right</text>
+</svg>

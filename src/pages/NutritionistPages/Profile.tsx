@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Header from './Header'
 import MealPlanManager from '../MealPlanManager'
 import { User } from '../../types/User'
 import { getNutritionistProfile, getClientsForNutritionist } from '../../services/nutritionistService'
@@ -53,8 +52,6 @@ const NutritionistProfile = () => {
 
   return (
     <div>
-
-      <Header/>
       <div className='flex flex-col'>
          <span>Welcome {user?.name}</span>
       <span> {user?.role}</span>

@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { User } from "../../types/User"; 
 import { getClientProfile } from "../../services/clientService";
 import MealPlanManager from "../MealPlanManager";
-import Header from "./Header";
+import Header from "./navigation-links/Header";
 
 
 const ClientProfile = () => {
@@ -32,7 +31,6 @@ const ClientProfile = () => {
     <div
       className=" mx-auto bg-white shadow-lg rounded-2xl p-9 border border-gray-100"
     > 
-    <Header/>
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
         <h2 className="text-3xl font-bold text-gray-800">My Profile</h2>
@@ -99,7 +97,7 @@ const ClientProfile = () => {
 
 
      
-      <MealPlanManager user={user} userId={userId}/>
+     <MealPlanManager user={user} userId={userId}/>
     </div>
   );
 };

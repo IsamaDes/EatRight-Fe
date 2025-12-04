@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 import healthyfoodimg from "../assets/healthyfoodimg.jpg"
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff} from 'lucide-react';
 
 
 const Login = () => {
