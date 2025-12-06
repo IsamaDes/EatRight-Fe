@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Avatar, Popover } from 'antd';
 import UserOverviewCard from './UserOverviewCard';
 import { getCurrentUser, User } from '../../../services/userService';
-import userpicture from "./SideImages/userPicture.svg";
+import userpicture from "./SideImages/userpicture.svg";
 import eng from "./SideImages/eng.svg"
 import frs from "./SideImages/frs.svg"
 

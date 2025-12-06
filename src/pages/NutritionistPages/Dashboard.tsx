@@ -43,8 +43,6 @@ export default function NutritionistDashboard() {
 
   return (
     <div className="p-6 space-y-8">
-  
-
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard title="Clients" value={data.total.clients} color="red" />

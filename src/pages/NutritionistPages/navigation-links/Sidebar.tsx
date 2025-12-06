@@ -6,15 +6,12 @@ function Sidebar() {
   const [activeButton, setActiveButton] = useState<number | null>(null);
 
   const menuItems = [ 
-   { name: "Overview", icon: "/overview.svg", whiteIcon: "/whiteoverview.svg", link: "/client" },
-    { name: "My Profile", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/client/profile" },
-    { name: "Health Assessment", icon: "/healthassessment.svg", whiteIcon: "/whitehealthassessment.svg", link: "/client/health-assessment" },
-    { name: "Consultation", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/client/consultation" },
-    { name: "Meal Plans", icon: "/mealplans.svg", whiteIcon: "/mealplans.svg", link: "/client/meal-plans" },
-    { name: "Shop", icon: "/shop.svg", whiteIcon: "/whiteshop.svg", link: "/client/shop" },
-    { name: "Messages", icon: "/mymessages.svg", whiteIcon: "/whitemessage.svg", link: "/client/messages" },
-    { name: "Subscriptions", icon: "/subscriptions.svg", whiteIcon: "/whitesubscription.svg", link: "/client/subscriptions" },
-    { name: "Sign Out", icon: "/signout.svg", whiteIcon: "/whitesignout.svg", link: "/client/signout" }
+   { name: "Overview", icon: "/overview.svg", whiteIcon: "/whiteoverview.svg", link: "/nutritionist" },
+   { name: "My Profile", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/profile" },
+   { name: "Consultation", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/consultation" },
+   { name: "Clients", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/clients" },
+   { name: "Messages", icon: "/mymessages.svg", whiteIcon: "/whitemessage.svg", link: "/nutritionist/messages" },
+   { name: "Sign Out", icon: "/signout.svg", whiteIcon: "/whitesignout.svg", link: "/nutritionist/signout" }
   ];
 
   const handleButtonClick = (index: number) => {
@@ -29,11 +26,9 @@ function Sidebar() {
         <img
           src="/eatright.svg"
           alt="Keep Me Fit Logo"
-          className="mx-auto w-[80px] h-[38px]"
+          className="mx-auto"
         />
-        <div className="font-600 text-[25px] leading-[38px] text-green-500 font-nohemi">
-           EatRight
-        </div>
+
       </div>
 
       {/* Menu area */}

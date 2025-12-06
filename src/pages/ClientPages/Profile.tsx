@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { User } from "../../types/User"; 
 import { getClientProfile } from "../../services/clientService";
-import MealPlanManager from "../MealPlanManager";
-import Header from "./navigation-links/Header";
 
 
 const ClientProfile = () => {
@@ -95,9 +93,6 @@ const ClientProfile = () => {
   </button>
 </div>
 
-
-     
-     <MealPlanManager user={user} userId={userId}/>
     </div>
   );
 };

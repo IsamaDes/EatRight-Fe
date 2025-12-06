@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import MealPlanManager from '../MealPlanManager'
 import { User } from '../../types/User'
 import { getNutritionistProfile, getClientsForNutritionist } from '../../services/nutritionistService'
 
@@ -77,8 +76,7 @@ const NutritionistProfile = () => {
               ))}
             </ul>
           )}
-     
-      <MealPlanManager user={user} userId={userId}/>
+
     </div>
   )
 }

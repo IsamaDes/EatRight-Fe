@@ -7,25 +7,16 @@ import AdminLayout from "./pages/AdminPages/Layout";
 import AdminDashboard from "./pages/AdminPages/Dashboard";
 import AdminProfile from "./pages/AdminPages/Profile";
 import Clients from "./pages/AdminPages/Clients";
-import CreateProduct from "./pages/AdminPages/Shop/CreateProduct";
-import CreateProductCategory from "./pages/AdminPages/Shop/CreateProductCategory";
-import EditProduct from "./pages/AdminPages/Shop/EditProduct";
-import ViewProducts from "./pages/AdminPages/Shop/ViewProducts";
-import PurchaseOrders from "./pages/AdminPages/Shop/PurchaseOrders";
-import CreateRoleAndPermissions from "./pages/AdminPages/Employees/CreateRoleAndPermissions";
-import AssignRoleAndPermissions from "./pages/AdminPages/Employees/AssignRoleAndPermissions";
 import Analytics from "./pages/AdminPages/Analytics";
 import EatRightFacility from "./pages/AdminPages/EatRightFacility";
 import About from "./pages/AdminPages/About";
 import Settings from "./pages/AdminPages/Settings";
 import AdminSupport from "./pages/AdminPages/Support";
-import Departments from "./pages/AdminPages/Departments";
 import Notifications from "./pages/AdminPages/Notifications";
 import ClientLayout from "./pages/ClientPages/Layout";
 import ClientProfile from "./pages/ClientPages/Profile";
 import HealthAnalytics from "./pages/AdminPages/Analytics";
 import Messages from "./pages/ClientPages/Messages";
-import Shop from "./pages/ClientPages/Shop";
 import ClientSupport from "./pages/ClientPages/Support";
 import NutritionistSupport from "./pages/NutritionistPages/Support";
 import NutritionistShop from "./pages/NutritionistPages/Shop";
@@ -33,6 +24,10 @@ import NutritionistClients from "./pages/NutritionistPages/Clients";
 import NutritionistLayout from "./pages/NutritionistPages/Layout";
 import NutritionistDashboard from "./pages/NutritionistPages/Dashboard";
 import NutritionistProfile from "./pages/NutritionistPages/Profile";
+import Subscription from "./pages/ClientPages/Subscription";
+import ClientDashboard from "./pages/ClientPages/Dashboard";
+import MealPlan from "./pages/ClientPages/MealPlan";
+import ViewNutrionist from "./pages/AdminPages/Nutritionist";
 
 const App = () => {
   return (
@@ -52,39 +47,20 @@ const App = () => {
             <Route path="support" element={<AdminSupport />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
-            <Route path="departments" element={<Departments />} />
             <Route path="notifications" element={<Notifications />} />
-
-            <Route path="shop">
-              <Route path="view-products" element={<ViewProducts />} />
-              <Route
-                path="create-category"
-                element={<CreateProductCategory />}
-              />
-              <Route path="create-product" element={<CreateProduct />} />
-              <Route path="edit-products" element={<EditProduct />} />
-              <Route path="purchase-orders" element={<PurchaseOrders />} />
-            </Route>
-
-            <Route path="employees">
-              <Route
-                path="create-role&permissions"
-                element={<CreateRoleAndPermissions />}
-              />
-              <Route
-                path="assign-role&permissions"
-                element={<AssignRoleAndPermissions />}
-              />
-            </Route>
+            <Route path="nutritionist" element={<ViewNutrionist />} />
+            <Route path="messages" element={<Messages />} />
           </Route>
 
           <Route path="/client" element={<ClientLayout />}>
-            <Route index element={<ClientProfile />} />
+            <Route index element={<ClientDashboard />} />
             <Route path="profile" element={<ClientProfile />} />
-            <Route path="health-analytics" element={<HealthAnalytics />} />
-            <Route path="messages" element={<Messages />} />
-            <Route path="shop" element={<Shop />} />
+            <Route path="dashboard" element={<ClientDashboard />} />
+            <Route path="analytics" element={<HealthAnalytics />} />
+            <Route path="messages" element={<Messages />} />{" "}
+            <Route path="subscription" element={<Subscription />} />
             <Route path="support" element={<ClientSupport />} />
+            <Route path="meal-plan" element={<MealPlan />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />

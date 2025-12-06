@@ -5,14 +5,14 @@ import dashboardblue from "./SideImages/dashboardblue.svg"
 import departmentlogo from "./SideImages/departmentwhite.svg"
 import departmentblue from "./SideImages/departmentblue.svg"
 import inventory from "./SideImages/inventory.svg"
-import notifications from "./SideImages/notifications.svg"
-import notificationsblue from "./SideImages/notificationsblue.svg"
 import settingsIcon from "./SideImages/settings.svg"
 import settingsblue from "./SideImages/settingsblue.svg"
 import helpsupport from "./SideImages/helpsupport.svg"
 import helpsupportblue from "./SideImages/helpsupportblue.svg"
 import about from "./SideImages/about.svg"
 import aboutappblue from "./SideImages/aboutapplicationblue.svg"
+import analytics from "./SideImages/analytics.svg"
+import analyticsblue from "./SideImages/analyticsblue.svg"
  
 function Sidebar() {
   const location = useLocation();
@@ -32,7 +32,7 @@ function Sidebar() {
 
   const handleButtonClick = (buttonName: string) => {
    
-      const path = buttonName === "dashboard" ? "/admin" : buttonName
+      const path = buttonName === "dashboard" ? "/client" : buttonName
       navigate(path)
       setActiveButton(buttonName)
       sessionStorage.setItem("location", path)
@@ -67,7 +67,6 @@ function Sidebar() {
           
           </div>
         </button>
-       
       </>
     )
 
@@ -94,9 +93,11 @@ function Sidebar() {
                   <h2 className="text-md mt-4 font-bold mb-2 font-poppins text-[17px] leading-[15.4px] text-left">Main</h2>
                 </div>
                 {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
+                {renderButton("profile", dashboard, dashboardblue, "Profile")}
+                {renderButton("meal-plan", dashboard, dashboardblue, "Mealplan")}
                 {renderButton("messages", departmentlogo, departmentblue, "Messages")}
-                {renderButton("shop", inventory, inventory, "Shop", true)}
-                {renderButton("notifications", notifications, notificationsblue, "Notifications")}
+                {renderButton("analytics", analytics, analyticsblue, "Analytics")}
+                {renderButton("subscription", analytics, analyticsblue, "Subscription")}
               </div>
               <div className="flex flex-col gap-8 mt-7">
                 <div>

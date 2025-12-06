@@ -54,3 +54,6 @@ export const updateMealPlan = async (id: string, updateData: Partial<MealPlanDat
   const { data } = await axiosInstance.put(`/nutritionist/${id}`, updateData);
   return data;
 };
+
+
+
