@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getChatMessages, sendMessage } from '../../services/chatService';
+import { io } from "socket.io-client";
+
 
 interface Receiver {
   id: string;
@@ -24,13 +26,14 @@ interface Message {
 
 interface ChatContainers {
   adminChats: Message[];
-  consultantChats: Message[];
+  nutrionistChats: Message[];
 }
 
 const ChatSpace = () => {
+  const socket = io("http://localhost:5000");
   const [chatContainers, setChatContainers] = useState<ChatContainers>({
     adminChats: [],
-    consultantChats: [],
+    nutrionistChats: [],
   });
   const [filterType, setFilterType] = useState<'admin' | 'nutritionist'>('admin');
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,6 +51,23 @@ const ChatSpace = () => {
 
   const userId =
     typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+
+    // Join user's personal room
+  socket.emit("join_room", userId); 
+
+  // Listen for incoming messages
+socket.on("new_message", (msg) => {
+  if (msg.sender_id === userId) return;
+  if (msg.sender_id === selectedReceiverId) {
+    setChatContainers(prev => ({
+      ...prev,
+      [filterType === "admin" ? "adminChats" : "nutrionistChats"]: [
+        ...prev[filterType === "admin" ? "adminChats" : "nutrionistChats"],
+        msg,
+      ]
+    }));
+  }
+});
  
   const onSelectReceiver = (id: string) => setSelectedReceiverId(id);
 
@@ -87,7 +107,7 @@ const ChatSpace = () => {
             email: c.email,
             phone: c.phone_number || 'N/A',
             status: c.status || 'Unknown',
-            role: 'Consultant',
+            role: 'Nutrionist',
             image: '/default-user.svg',
             message: '',
             delivered: true,
@@ -166,8 +186,8 @@ const ChatSpace = () => {
       setChatContainers((prev) => {
         const updated = {
           ...prev,
-          [filterType === 'admin' ? 'adminChats' : 'consultantChats']: [
-            ...prev[filterType === 'admin' ? 'adminChats' : 'consultantChats'],
+          [filterType === 'admin' ? 'adminChats' : 'nutrionistChats']: [
+            ...prev[filterType === 'admin' ? 'adminChats' : 'nutrionistChats'],
             sentMessage as Message,
           ],
         };
@@ -192,7 +212,7 @@ const ChatSpace = () => {
 
   const activeMessages = [
     ...chatContainers[
-      filterType === 'admin' ? 'adminChats' : 'consultantChats'
+      filterType === 'admin' ? 'adminChats' : 'nutrionistChats'
     ],
   ].sort(
     (a, b) =>
