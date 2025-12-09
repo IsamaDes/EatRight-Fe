@@ -20,7 +20,7 @@ const AdminOverviewCard = ({ user }: AdminOverviewCardProps) => {
 
   const handleDashboard = () => {
     // Navigate to admin dashboard
-    window.location.href = '/admin/dashboard';
+    window.location.href = '/admin';
   };
 
   const handleSettings = () => {

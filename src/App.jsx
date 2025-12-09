@@ -10,7 +10,6 @@ import Clients from "./pages/AdminPages/Clients";
 import Analytics from "./pages/AdminPages/Analytics";
 import About from "./pages/AdminPages/About";
 import Settings from "./pages/AdminPages/Settings";
-import AdminSupport from "./pages/AdminPages/Support";
 import Notifications from "./pages/AdminPages/Notifications";
 import ClientLayout from "./pages/ClientPages/Layout";
 import ClientProfile from "./pages/ClientPages/Profile";
@@ -18,7 +17,6 @@ import HealthAnalytics from "./pages/AdminPages/Analytics";
 import Messages from "./pages/ClientPages/Messages";
 import ClientSupport from "./pages/ClientPages/Support";
 import NutritionistSupport from "./pages/NutritionistPages/Support";
-import NutritionistShop from "./pages/NutritionistPages/Shop";
 import NutritionistClients from "./pages/NutritionistPages/Clients";
 import NutritionistProfile from "./pages/NutritionistPages/Profile";
 import ClientDashboard from "./pages/ClientPages/Dashboard";
@@ -27,6 +25,10 @@ import ViewNutrionist from "./pages/AdminPages/Nutritionist";
 import SubscriptionPlans from "./pages/Subscription";
 import NutritionistLayout from "./pages/NutritionistPages/Layout";
 import NutritionistDashboard from "./pages/NutritionistPages/Dashboard";
+import AdminProfileUpdate from "./pages/AdminPages/UpdateAdminProfile";
+import ClientProfileUpdate from "./pages/ClientPages/EditClientProfile";
+import NutritionistProfileUpdate from "./pages/NutritionistPages/UpdateNutritionistProfile";
+import Consultants from "./pages/AdminPages/Consultants";
 
 const App = () => {
   return (
@@ -40,9 +42,10 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="profile" element={<AdminProfile />} />
+            <Route path="edit-profile" element={<AdminProfileUpdate />} />
             <Route path="clients" element={<Clients />} />
+            <Route path="consultants" element={<Consultants />} />
             <Route path="analytics" element={<Analytics />} />
-            <Route path="support" element={<AdminSupport />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />
@@ -53,6 +56,7 @@ const App = () => {
           <Route path="/client" element={<ClientLayout />}>
             <Route index element={<ClientDashboard />} />
             <Route path="profile" element={<ClientProfile />} />
+            <Route path="edit-profile" element={<ClientProfileUpdate />} />
             <Route path="dashboard" element={<ClientDashboard />} />
             <Route path="analytics" element={<HealthAnalytics />} />
             <Route path="messages" element={<Messages />} />{" "}
@@ -67,9 +71,12 @@ const App = () => {
           <Route path="/nutritionist" element={<NutritionistLayout />}>
             <Route index element={<NutritionistDashboard />} />
             <Route path="profile" element={<NutritionistProfile />} />
+            <Route
+              path="edit-profile"
+              element={<NutritionistProfileUpdate />}
+            />
             <Route path="clients" element={<NutritionistClients />} />
             <Route path="messages" element={<Messages />} />
-            <Route path="shop" element={<NutritionistShop />} />
             <Route path="support" element={<NutritionistSupport />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />

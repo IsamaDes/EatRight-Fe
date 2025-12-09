@@ -1,98 +1,6 @@
-// import React, { useEffect, useState } from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import { User } from '../../types/User'
-// import { getNutritionistProfile, getClientsForNutritionist } from '../../services/nutritionistService'
-
-
-// interface UserData {
-//   _id: string;
-//   name: string;
-//   email: string;
-//   createdAt: string;
-//   assignedNutritionist?: string;
-// }
-
-
-// const NutritionistProfile = () => {
-//   const navigate = useNavigate()
-//   const [user, setUser] = useState<User | null>(null);
-//   const [loading, setLoading] = useState(false);
-//   const [userId, setUserId] = useState("");
-//     const [userList, setUserList] = useState<UserData[]>([]);
-  
-
-//   console.log("Logged-in user:", user?._id);
-
-  
-//     const fetchUser = async() => {
-//     try{
-//     const response = await getNutritionistProfile();
-//     setUser(response)
-//     setUserId(response._id)
-//     }catch(err){
-//      console.error("Failed to fetch user", err);
-//     }
-//     }
-  
-//   const fetchClientsForNutritionist = async() => {
-//     try{
-//       const userList = await getClientsForNutritionist()
-//     }catch(err){
-//      console.error("Failed to fetch user", err);
-
-//     }
-//   }
-//   useEffect(() => {
-  
-//     fetchUser()
-//     fetchClientsForNutritionist()
-//   }, [])
-
-
-//   return (
-//     <div>
-//       <div className='flex flex-col'>
-//          <span>Welcome {user?.name}</span>
-//       <span> {user?.role}</span>
-//       </div>
-
-//        {userList?.length === 0 ? (
-//             <p className="text-gray-500 text-center py-4">No records found.</p>
-//           ) : (
-//             <ul className="divide-y divide-gray-200 max-h-80 overflow-y-auto">
-//               {userList?.map((user) => (
-//                 <li key={user._id} 
-//                 onClick={() => navigate(`/users/${user?._id}`)}
-//                 className="py-3 flex justify-between items-center">
-//                   <div>
-//                     <p className="font-medium text-gray-800">{user.name}</p>
-//                     <p className="text-sm text-gray-500">{user.email}</p>
-//                   </div>
-//                   <span className="text-xs text-gray-400">
-//                     {new Date(user.createdAt).toLocaleDateString()}
-//                   </span>
-                  
-//                 </li>
-//               ))}
-//             </ul>
-//           )}
-
-//     </div>
-//   )
-// }
-
-// export default NutritionistProfile
-
-
-
-
-
-
-
 import { useState, useEffect } from "react";
-import { getNutritionistProfile, getClientsForNutritionist } from '../../services/nutritionistService'
+import { getNutritionistProfile } from '../../services/nutritionistService'
 
-// Define interfaces matching your API response
 interface NutritionistProfile {
   id: string;
   userId: string;
@@ -188,7 +96,7 @@ const NutritionistProfile = () => {
         {/* Left Column - Profile Info */}
         <div className="lg:col-span-2 space-y-6">
           
-          {/* Basic Information */}
+     
           <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-xl">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -221,7 +129,7 @@ const NutritionistProfile = () => {
             </div>
           </div>
 
-          {/* Professional Details */}
+         
           <div className="bg-white border border-gray-200 p-6 rounded-xl">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +168,6 @@ const NutritionistProfile = () => {
             </div>
           </div>
 
-          {/* Profile Completion Tip */}
           {(!profile || !profile.certification || !profile.specialization || !profile.bio) && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-start gap-3">
@@ -278,10 +185,8 @@ const NutritionistProfile = () => {
           )}
         </div>
 
-        {/* Right Column - Stats & Actions */}
         <div className="space-y-6">
           
-          {/* Assigned Clients Card */}
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
               <svg className="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +217,6 @@ const NutritionistProfile = () => {
             )}
           </div>
 
-          {/* Quick Stats */}
           <div className="bg-white border border-gray-200 p-6 rounded-xl">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Quick Stats</h3>
             <div className="space-y-3">
@@ -332,7 +236,6 @@ const NutritionistProfile = () => {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="space-y-3">
             <button
               onClick={() => {

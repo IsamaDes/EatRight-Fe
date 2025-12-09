@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate} from "react-router-dom";
 import dashboard from "./SideImages/dashboard.svg"
 import dashboardblue from "./SideImages/dashboardblue.svg"
-import departmentlogo from "./SideImages/departmentwhite.svg"
-import departmentblue from "./SideImages/departmentblue.svg"
+import whitemessage from "./SideImages/whitemessage.svg";
+import myprofile from "./SideImages/myprofile.svg"
+import whitemyprofile from "./SideImages/whitemyprofile.svg"
 import settingsIcon from "./SideImages/settings.svg"
 import settingsblue from "./SideImages/settingsblue.svg"
 import helpsupport from "./SideImages/helpsupport.svg"
@@ -12,6 +13,11 @@ import about from "./SideImages/about.svg"
 import aboutappblue from "./SideImages/aboutapplicationblue.svg"
 import analytics from "./SideImages/analytics.svg"
 import analyticsblue from "./SideImages/analyticsblue.svg"
+import mealplans from "./SideImages/mealplans.svg"
+import subscriptionimg from "./SideImages/subscriptions.svg"
+import whitesubscriptionimg from "./SideImages/whitesubscription.svg"
+
+
  
 function Sidebar() {
   const location = useLocation();
@@ -21,9 +27,7 @@ function Sidebar() {
 
    useEffect(() => {
       const path = location.pathname
-  
       setActiveButton(path.slice(1) || "dashboard")
-  
       sessionStorage.setItem("location", path)
     }, [location])
 
@@ -92,11 +96,11 @@ function Sidebar() {
                   <h2 className="text-md mt-4 font-bold mb-2 font-poppins text-[17px] leading-[15.4px] text-left">Main</h2>
                 </div>
                 {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
-                {renderButton("profile", dashboard, dashboardblue, "Profile")}
-                {renderButton("meal-plan", dashboard, dashboardblue, "Mealplan")}
-                {renderButton("messages", departmentlogo, departmentblue, "Messages")}
+                {renderButton("profile", myprofile, whitemyprofile, "Profile")}
+                {renderButton("meal-plan", mealplans, mealplans, "Mealplan")}
+                {renderButton("messages", whitemessage, whitemessage, "Messages")}
                 {renderButton("analytics", analytics, analyticsblue, "Analytics")}
-                {renderButton("subscription", analytics, analyticsblue, "Subscription")}
+                {renderButton("subscription", subscriptionimg, whitesubscriptionimg, "Subscription")}
               </div>
               <div className="flex flex-col gap-8 mt-7">
                 <div>

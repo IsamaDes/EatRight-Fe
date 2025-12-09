@@ -11,6 +11,14 @@ export const getAdminDashboard = async () => {
   }
 };
 
+export const getAdminProfile = async () => {
+ try{
+  const response = await axiosInstance.get("/admin/profile");
+  return response.data;
+ }catch(error: any){
+  throw error.response?.data || error;
+ }
+}
 
 export const updateMealPlan = async () => {
   try{

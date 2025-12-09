@@ -8,8 +8,6 @@ import notifications from "./SideImages/notifications.svg"
 import notificationsblue from "./SideImages/notificationsblue.svg"
 import settingsIcon from "./SideImages/settings.svg"
 import settingsblue from "./SideImages/settingsblue.svg"
-import helpsupport from "./SideImages/helpsupport.svg"
-import helpsupportblue from "./SideImages/helpsupportblue.svg"
 import about from "./SideImages/about.svg"
 import aboutappblue from "./SideImages/aboutapplicationblue.svg"
 import anglebutton from "./SideImages/anglebuttonwhite.svg"
@@ -105,6 +103,7 @@ function Sidebar() {
                   <h2 className="text-md mt-4 font-bold mb-2 font-poppins text-[17px] leading-[15.4px] text-left">Main</h2>
                 </div>
                 {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
+                {renderButton("profile", dashboard, dashboardblue, "Profile")}
                 {renderButton("consultants", departmentlogo, departmentblue, "Consultants")}
                 {renderButton("clients", departmentlogo, departmentblue, "Clients")}
                 {renderButton("messages", notifications, notificationsblue, "Messages")}
@@ -114,8 +113,7 @@ function Sidebar() {
                   <h2 className="text-md font-bold font-poppins text-[17px] leading-[15.4px] text-left">Settings & Help</h2>
                 </div>
                 {renderButton('settings', settingsIcon, settingsblue, 'Settings')}
-                {renderButton('support', helpsupport, helpsupportblue, 'Help & Support')}
-                {renderButton('about', about, aboutappblue, 'About Application')}
+                {renderButton('about', about, aboutappblue, 'About')}
               </div>
             </div>
     </div>
