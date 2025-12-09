@@ -29,6 +29,8 @@ import AdminProfileUpdate from "./pages/AdminPages/UpdateAdminProfile";
 import ClientProfileUpdate from "./pages/ClientPages/EditClientProfile";
 import NutritionistProfileUpdate from "./pages/NutritionistPages/UpdateNutritionistProfile";
 import Consultants from "./pages/AdminPages/Consultants";
+import EditClient from "./pages/AdminPages/EditClient";
+import EditNutritionist from "./pages/AdminPages/EditNutritionist";
 
 const App = () => {
   return (
@@ -44,6 +46,8 @@ const App = () => {
             <Route path="profile" element={<AdminProfile />} />
             <Route path="edit-profile" element={<AdminProfileUpdate />} />
             <Route path="clients" element={<Clients />} />
+            <Route path="edit-client" element={<EditClient />} />
+            <Route path="edit-nutritionist" element={<EditNutritionist />} />
             <Route path="consultants" element={<Consultants />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="about" element={<About />} />

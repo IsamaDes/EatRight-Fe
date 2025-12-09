@@ -116,7 +116,7 @@ function UserList({
 }) {
   const handleUserClick = (user: UserData) => {
     onSelect(user); 
-    navigate(`/${title.toLowerCase()}/profile/${user._id}`);
+    navigate(`/admin/${title.toLowerCase()}-profile/${user._id}`);
   };
 
   return (
