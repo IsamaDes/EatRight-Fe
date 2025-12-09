@@ -4,11 +4,6 @@ import dashboard from "./SideImages/dashboard.svg"
 import dashboardblue from "./SideImages/dashboardblue.svg"
 import departmentlogo from "./SideImages/departmentwhite.svg"
 import departmentblue from "./SideImages/departmentblue.svg"
-import employees from "./SideImages/employees.svg"
-import employeeblue from "./SideImages/employeeblue.svg"
-import hospitalfacility from "./SideImages/hospitalfacility.svg"
-import hospitalfacilityblue from "./SideImages/hospitalfacilityblue.svg"
-import inventory from "./SideImages/inventory.svg"
 import notifications from "./SideImages/notifications.svg"
 import notificationsblue from "./SideImages/notificationsblue.svg"
 import settingsIcon from "./SideImages/settings.svg"
@@ -112,7 +107,6 @@ function Sidebar() {
                 {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
                 {renderButton("consultants", departmentlogo, departmentblue, "Consultants")}
                 {renderButton("clients", departmentlogo, departmentblue, "Clients")}
-                {renderButton("eatrightrestaurant", hospitalfacility,hospitalfacilityblue,"EatRight-Facility",)}
                 {renderButton("messages", notifications, notificationsblue, "Messages")}
               </div>
               <div className="flex flex-col gap-8 mt-7">

@@ -157,4 +157,4 @@ const NutritionistLayout = () => {
   );
 };
 
-export default NutritionistLayout;
+export default NutritionistLayout

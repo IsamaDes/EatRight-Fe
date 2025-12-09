@@ -12,6 +12,11 @@ export interface MealPlanData {
   weeklyMealPlans: any[];
 }
 
+export const getNutritionistDashboard = async () => {
+  const res = await axiosInstance.get("/nutritionist/dashboard");
+  return res.data.data;
+};
+
 export const getNutritionistProfile = async () => {
   try {
     const response = await axiosInstance.get("/nutritionist/profile");

@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import foodcool from "../assets/foodcool.jpg"
 
-// import { toast } from "react-hot-toast";
-
 const Register = () => {
 
   const navigate = useNavigate();
@@ -14,7 +12,7 @@ const Register = () => {
     name: "",
     email: "",
     password: "",
-    role: "client",
+    role: "CLIENT",
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -130,9 +128,9 @@ const Register = () => {
           className="border border-gray-300 p-2 mb-4 w-full rounded-md"
           required>
           <option value="">Select Role</option>
-          <option value="client">Client</option>
-          <option value="nutritionist">Nutritionist</option>
-          <option value="admin">Admin</option>
+          <option value="CLIENT">Client</option>
+          <option value="NUTRITIONIST">Nutritionist</option>
+          <option value="ADMIN">Admin</option>
           </select>
         <button
           type="submit"

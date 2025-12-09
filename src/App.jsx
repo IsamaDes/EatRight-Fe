@@ -8,7 +8,6 @@ import AdminDashboard from "./pages/AdminPages/Dashboard";
 import AdminProfile from "./pages/AdminPages/Profile";
 import Clients from "./pages/AdminPages/Clients";
 import Analytics from "./pages/AdminPages/Analytics";
-import EatRightFacility from "./pages/AdminPages/EatRightFacility";
 import About from "./pages/AdminPages/About";
 import Settings from "./pages/AdminPages/Settings";
 import AdminSupport from "./pages/AdminPages/Support";
@@ -21,13 +20,13 @@ import ClientSupport from "./pages/ClientPages/Support";
 import NutritionistSupport from "./pages/NutritionistPages/Support";
 import NutritionistShop from "./pages/NutritionistPages/Shop";
 import NutritionistClients from "./pages/NutritionistPages/Clients";
-import NutritionistLayout from "./pages/NutritionistPages/Layout";
-import NutritionistDashboard from "./pages/NutritionistPages/Dashboard";
 import NutritionistProfile from "./pages/NutritionistPages/Profile";
-import Subscription from "./pages/ClientPages/Subscription";
 import ClientDashboard from "./pages/ClientPages/Dashboard";
 import MealPlan from "./pages/ClientPages/MealPlan";
 import ViewNutrionist from "./pages/AdminPages/Nutritionist";
+import SubscriptionPlans from "./pages/Subscription";
+import NutritionistLayout from "./pages/NutritionistPages/Layout";
+import NutritionistDashboard from "./pages/NutritionistPages/Dashboard";
 
 const App = () => {
   return (
@@ -43,7 +42,6 @@ const App = () => {
             <Route path="profile" element={<AdminProfile />} />
             <Route path="clients" element={<Clients />} />
             <Route path="analytics" element={<Analytics />} />
-            <Route path="eatrightrestaurant" element={<EatRightFacility />} />
             <Route path="support" element={<AdminSupport />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
@@ -58,7 +56,7 @@ const App = () => {
             <Route path="dashboard" element={<ClientDashboard />} />
             <Route path="analytics" element={<HealthAnalytics />} />
             <Route path="messages" element={<Messages />} />{" "}
-            <Route path="subscription" element={<Subscription />} />
+            <Route path="subscription" element={<SubscriptionPlans />} />
             <Route path="support" element={<ClientSupport />} />
             <Route path="meal-plan" element={<MealPlan />} />
             <Route path="about" element={<About />} />

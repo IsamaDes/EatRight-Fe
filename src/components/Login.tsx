@@ -23,6 +23,7 @@ const Login = () => {
     try {
       const response = await loginUser({ email, password });
       console.log(response)
+    
       const userRole =  response.data.role;
       const userName =  response.data.name;
       const token =  response.data.token
@@ -35,9 +36,9 @@ const Login = () => {
       localStorage.setItem("role", userRole);
       localStorage.setItem("access_token", token);
 
-      if (userRole === "admin") navigate("/admin");
-      else if (userRole === "nutritionist") navigate("/nutritionist");
-      else if (userRole === "client") navigate("/client");
+      if (userRole === "ADMIN") navigate("/admin");
+      else if (userRole === "NUTRITIONIST") navigate("/nutritionist");
+      else if (userRole === "CLIENT") navigate("/client");
       else navigate("/login");
 
     } catch (err: any) {

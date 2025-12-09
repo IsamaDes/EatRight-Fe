@@ -161,8 +161,6 @@ socket.on("new_message", (msg) => {
       }
     };
     fetchMessages();
-    // const interval = setInterval(fetchMessages, 5000);
-    // return () => clearInterval(interval);
   }, [selectedReceiverId, userId, filterType]);
 
   useEffect(() => {

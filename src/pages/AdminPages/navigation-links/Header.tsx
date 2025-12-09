@@ -1,14 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Avatar, Popover } from 'antd';
-import UserOverviewCard from './UserOverviewCard';
-import { getCurrentUser, User } from '../../../services/userService';
-import userpicture from "./SideImages/userpicture.svg";
+import AdminOverviewCard from './UserOverviewCard';
+import { getCurrentUser } from '../../../services/userService';
 import eng from "./SideImages/eng.svg"
 import frs from "./SideImages/frs.svg"
+import userpicture from "./SideImages/userPicture.svg"
 
+interface UserProfile {
+
+}
+
+// Update the User interface to match your API response
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  profile: null; // Can be null for admin
+}
+
+interface UserResponse {
+  status: string;
+  user: User;
+}
 
 const Headerbar = () => {
-  const [clientData, setClientData] = useState(null);
   const [notificationDrop, setNotificationDrop] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [userAccountDrop, setUserAccountDrop] = useState(false);
@@ -17,26 +33,25 @@ const Headerbar = () => {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleLanguageChange = (value: any) => {
+  const handleLanguageChange = (value: string) => {
     setLanguage(value);
     setIsLanguageDropdownOpen(false);
   };
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   useEffect(() => {
-    const storedData = localStorage.getItem('client_data');
-    if (storedData) setClientData(JSON.parse(storedData));
-  }, []);
-
-  useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const data = await getCurrentUser();
-        setUser(data.user);
-        localStorage.setItem('user_data', JSON.stringify(data));
+        const response: UserResponse = await getCurrentUser();
+        console.log('User data:', response);
+        
+        if (response.status === 'success' && response.user) {
+          setUser(response.user);
+          localStorage.setItem('user_data', JSON.stringify(response.user));
+        }
       } catch (err) {
         console.error('User fetch failed:', err);
       }
@@ -44,13 +59,22 @@ const Headerbar = () => {
     fetchUserData();
   }, []);
 
+  // Determine which overview card to show based on role
+  const renderOverviewCard = () => {
+    if (user?.role === 'ADMIN') {
+      return <AdminOverviewCard user={user} />;
+    }
+
+  };
+
+  
+
   return (
     <div className="flex items-center justify-between h-[80px] px-4">
 
-      
       {/* Welcome */}
       <div className="font-poppins text-sm sm:text-base lg:text-lg font-medium text-gray-800">
-        Welcome {user?.first_name || 'User'} 👋🏼
+        Welcome {user?.name || 'User'} 👋🏼
       </div>
 
       {/* Right side */}
@@ -83,7 +107,7 @@ const Headerbar = () => {
             >
               {language === 'En' ? (
                 <div className="flex items-center gap-1 sm:gap-2">
-                  <img src={eng} alt="English" className="w-2 h-2 sm:w-5 sm:h-5" />
+                  <img src={eng} alt="English" className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="text-xs sm:text-sm hidden sm:inline">Eng(US)</span>
                   <span className="text-xs sm:hidden">En</span>
                   <img src="/vangle.svg" alt="" className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -110,9 +134,8 @@ const Headerbar = () => {
                   className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer text-sm"
                   onClick={() => handleLanguageChange('Fr')}
                 >
-                   <img src={frs} alt="English" className="w-4 h-4" />
-                  <span className="hidden sm:inline">French</span>
-                  
+                   <img src={frs} alt="French" className="w-4 h-4" />
+                   <span className="hidden sm:inline">French</span>
                 </div>
               </div>
             )}
@@ -148,18 +171,46 @@ const Headerbar = () => {
           {/* User Popover */}
           <Popover
             placement="bottomRight"
-            content={<UserOverviewCard />}
+            content={renderOverviewCard()}
             trigger="click"
             open={userAccountDrop}
-            onOpenChange={(visible: any) => setUserAccountDrop(visible)}
+            onOpenChange={(visible) => setUserAccountDrop(visible)}
           >
             <button className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded-lg">
-               {user?.profile_picture?.trim() ?  <Avatar size={40} src={user?.profile_picture} /> : <img src={userpicture} className='h-10 w-10' />}
+              {/* Show crown icon for admin */}
+              {user?.role === 'ADMIN' ? (
+                <div className="relative">
+                  <Avatar 
+                    size={40} 
+                    src={userpicture}
+                    alt={user?.name}
+                    style={{ backgroundColor: '#3b82f6' }}
+                  >
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </Avatar>
+                  {/* Crown badge */}
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full flex items-center justify-center border-2 border-white">
+                    <svg className="w-3 h-3 text-yellow-800" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  </div>
+                </div>
+              ) : (
+                <Avatar 
+                  size={40} 
+                  src={userpicture}
+                  alt={user?.name}
+                  style={{ backgroundColor: '#10b981' }}
+                >
+                  {user?.name?.charAt(0).toUpperCase()}
+                </Avatar>
+              )}
+              
               <div className="hidden sm:flex flex-col text-left">
                 <p className="font-semibold text-gray-900 text-sm truncate max-w-[120px]">
-                  {user?.user_name}
+                  {user?.name || 'User'}
                 </p>
-                <p className="text-xs text-gray-600">Premium</p>
+              
               </div>
               <img src="/vangle.svg" alt="" className="w-4 h-4 hidden sm:block" />
             </button>
@@ -171,6 +222,3 @@ const Headerbar = () => {
 };
 
 export default Headerbar;
-
-
- 
