@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Plan = 'Basic' | 'Premium' | 'Meal+Fitness';
 
@@ -13,10 +14,10 @@ type Meal = {
 type UserProfile = {
   firstName: string;
   avatarUrl?: string;
-  profileCompletion: number; // 0-100
+  profileCompletion: number; 
   goals: string[];
   plan: Plan;
-  planExpiry: string; // ISO date
+  planExpiry: string; 
 };
 
 const mockUser: UserProfile = {
@@ -25,7 +26,7 @@ const mockUser: UserProfile = {
   profileCompletion: 80,
   goals: ['Weight loss', 'Balanced diet'],
   plan: 'Premium',
-  planExpiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 18).toISOString(), // 18 days from now
+  planExpiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 18).toISOString(), 
 };
 
 const todaysMeals: Meal[] = [
@@ -34,12 +35,6 @@ const todaysMeals: Meal[] = [
   { id: 'm3', name: 'Baked Salmon & Veg', time: 'Dinner', calories: 520, shortDesc: 'Omega-3 rich meal' },
 ];
 
-const TipOfTheDay = () => (
-  <div className="rounded-lg border border-gray-200 p-4 bg-white">
-    <h3 className="text-sm font-semibold">Tip of the Day</h3>
-    <p className="mt-2 text-sm leading-relaxed">Include a source of lean protein in every meal to boost satiety and maintain muscle mass.</p>
-  </div>
-);
 
 function formatDaysRemaining(iso: string) {
   const expiry = new Date(iso);
@@ -49,19 +44,25 @@ function formatDaysRemaining(iso: string) {
   return `${diff} day${diff > 1 ? 's' : ''}`;
 }
 
+
+
 const ClientDashboard = () => {
+  const navigate = useNavigate();
   const [user] = useState<UserProfile>(mockUser);
   const [meals] = useState<Meal[]>(todaysMeals);
   const [waterIntake, setWaterIntake] = useState<number>(6); // glasses
 
   const totalCalories = meals.reduce((s, m) => s + m.calories, 0);
 
+  const handleViewMealPlan = () => {
+  navigate("/client/meal-plan")
+}
+
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left column: Profile + Subscription */}
         <aside className="space-y-6 lg:col-span-1">
-          {/* Profile Card */}
           <section className="rounded-2xl bg-white p-6 shadow-sm border border-gray-200">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 rounded-full bg-gradient-to-br from-green-300 to-blue-300 flex items-center justify-center text-xl font-semibold text-white">
@@ -103,7 +104,6 @@ const ClientDashboard = () => {
             </div>
           </section>
 
-          {/* Quick Stats Card */}
           <section className="rounded-2xl bg-white p-4 shadow-sm border border-gray-200">
             <h4 className="text-sm font-semibold">Quick hydration</h4>
             <p className="text-xs text-gray-500 mt-1">Track daily water glasses</p>
@@ -135,10 +135,8 @@ const ClientDashboard = () => {
             </div>
           </section>
 
-          <TipOfTheDay />
         </aside>
 
-        {/* Middle column: Main Dashboard (meals + calories) */}
         <main className="lg:col-span-2 space-y-6">
           <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-200">
             <div className="flex items-start justify-between gap-4">
@@ -147,13 +145,9 @@ const ClientDashboard = () => {
                 <p className="text-sm text-gray-500 mt-1">Here’s your plan for today. Keep it up — small habits compound!</p>
               </div>
 
-              <div className="flex items-center gap-4">
-                <div className="text-sm text-gray-500 text-right">
-                  <div>Calories today</div>
-                  <div className="mt-1 text-lg font-semibold">{totalCalories} kcal</div>
-                </div>
-                <button className="rounded-md bg-white border px-3 py-2 text-sm">View full meal plan</button>
-              </div>
+
+                <button onClick={handleViewMealPlan} className="rounded-md bg-white border px-3 py-2 text-sm">View full meal plan</button>
+             
             </div>
 
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -171,9 +165,7 @@ const ClientDashboard = () => {
                         <div className="text-sm font-medium">{meal ? `${meal.calories} kcal` : '-'}</div>
                       </div>
                     </div>
-                    <div className="mt-3">
-                      <button className="text-xs font-medium text-blue-600">View recipe</button>
-                    </div>
+                  
                   </article>
                 );
               })}

@@ -55,6 +55,7 @@ export default function AdminDashboard() {
         <StatCard title="Clients" value={data.total.clients} color="red" icon={<UserGroupIcon className="w-8 h-8 text-white"/>} />
         <StatCard title="Admins" value={data.total.admins} color="green" icon={<UserIcon className="w-8 h-8 text-white"/>} />
         <StatCard title="Nutritionists" value={data.total.nutritionists} color="blue" icon={<UserGroupIcon className="w-8 h-8 text-white"/>} />
+       
       </div>
 
       <div className="bg-white rounded-xl shadow p-6 space-y-6">

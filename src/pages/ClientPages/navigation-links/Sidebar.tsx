@@ -1,118 +1,101 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
-import dashboard from "./SideImages/dashboard.svg"
-import dashboardblue from "./SideImages/dashboardblue.svg"
-import whitemessage from "./SideImages/whitemessage.svg";
-import myprofile from "./SideImages/myprofile.svg"
-import whitemyprofile from "./SideImages/whitemyprofile.svg"
-import settingsIcon from "./SideImages/settings.svg"
-import settingsblue from "./SideImages/settingsblue.svg"
-import helpsupport from "./SideImages/helpsupport.svg"
-import helpsupportblue from "./SideImages/helpsupportblue.svg"
-import about from "./SideImages/about.svg"
-import aboutappblue from "./SideImages/aboutapplicationblue.svg"
-import analytics from "./SideImages/analytics.svg"
-import analyticsblue from "./SideImages/analyticsblue.svg"
-import mealplans from "./SideImages/mealplans.svg"
-import subscriptionimg from "./SideImages/subscriptions.svg"
-import whitesubscriptionimg from "./SideImages/whitesubscription.svg"
+import { useLocation, useNavigate } from "react-router-dom";
 
+import {
+  FiHome,
+  FiMessageCircle,
+  FiUser,
+  FiSettings,
+  FiHelpCircle
+} from "react-icons/fi";
+import { MdOutlineAnalytics } from "react-icons/md";
+import { RiFileList2Line } from "react-icons/ri";
+import { AiOutlineWallet } from "react-icons/ai";
 
- 
 function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeButton, setActiveButton] = useState<string | null>(null);
- 
 
-   useEffect(() => {
-      const path = location.pathname
-      setActiveButton(path.slice(1) || "dashboard")
-      sessionStorage.setItem("location", path)
-    }, [location])
-
- 
+  useEffect(() => {
+    const path = location.pathname;
+    setActiveButton(path.slice(1) || "dashboard");
+    sessionStorage.setItem("location", path);
+  }, [location]);
 
   const handleButtonClick = (buttonName: string) => {
-   
-      const path = buttonName === "dashboard" ? "/client" : buttonName
-      navigate(path)
-      setActiveButton(buttonName)
-      sessionStorage.setItem("location", path)
-    
-    
+    const path = buttonName === "dashboard" ? "/client" : `/client/${buttonName}`;
+    navigate(path);
+    setActiveButton(buttonName);
+    sessionStorage.setItem("location", path);
   };
 
+  const renderButton = (
+    buttonName: string,
+    Icon: React.ElementType,
+    label: string
+  ) => {
+    const isActive = activeButton === buttonName;
 
-    const renderButton = (
-      buttonName: string,
-      icon: string,
-      activeIcon: string,
-      label: string,
-      hasDropdown: boolean = false,
-    ) => (
-      <>
-        <button
-          className={`flex items-center mb-2 p-2 rounded-lg ${activeButton === buttonName ? "bg-white" : ""}`}
-          onClick={() => handleButtonClick(buttonName)}
+    return (
+      <button
+        className={`flex items-center mb-2 p-3 rounded-lg transition-all duration-200
+          ${isActive ? "bg-green-200 text-green-800" : "text-white hover:bg-green-700/40"}
+        `}
+        onClick={() => handleButtonClick(buttonName)}
+      >
+        <Icon
+          size={22}
+          className={`mr-3 ${isActive ? "text-green-800" : "text-white"}`}
+        />
+        <p
+          className={`font-poppins text-[15px] font-medium leading-[15.4px]
+            ${isActive ? "text-green-800" : "text-white"}
+          `}
         >
-          <img
-            src={activeButton === buttonName ? activeIcon : icon}
-            alt={`${label} Logo`}
-            className='h-8 w-8 mr-2'
-          />
-          <div className='flex gap-4 items-center '>
-            <p
-              className={`${activeButton === buttonName ? "text-lightblue" : ""} font-poppins text-[15px] font-medium leading-[15.4px] text-left`}
-            >
-              {label}
-            </p>
-          
-          </div>
-        </button>
-      </>
-    )
-
-
+          {label}
+        </p>
+      </button>
+    );
+  };
 
   return (
-    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3  sm:bg-transparent">
+    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3 sm:bg-transparent">
 
-      {/* Logo area */}
-      <div className="flex gap-2 ">
+      {/* Logo */}
+      <div className="flex gap-2">
         <img
           src="/eatright.svg"
-          alt="Keep Me Fit Logo"
+          alt="EatRight Logo"
           className="mx-auto"
         />
-       
       </div>
 
-      {/* Menu area */}
-       <div className="flex flex-col gap-8 p-2 ">
-      
-              <div className="flex flex-col gap-5 ">
-                <div>
-                  <h2 className="text-md mt-4 font-bold mb-2 font-poppins text-[17px] leading-[15.4px] text-left">Main</h2>
-                </div>
-                {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
-                {renderButton("profile", myprofile, whitemyprofile, "Profile")}
-                {renderButton("meal-plan", mealplans, mealplans, "Mealplan")}
-                {renderButton("messages", whitemessage, whitemessage, "Messages")}
-                {renderButton("analytics", analytics, analyticsblue, "Analytics")}
-                {renderButton("subscription", subscriptionimg, whitesubscriptionimg, "Subscription")}
-              </div>
-              <div className="flex flex-col gap-8 mt-7">
-                <div>
-                  <h2 className="text-md font-bold font-poppins text-[17px] leading-[15.4px] text-left">Settings & Help</h2>
-                </div>
-                {renderButton('settings', settingsIcon, settingsblue, 'Settings')}
-                {renderButton('support', helpsupport, helpsupportblue, 'Help & Support')}
-                {renderButton('about', about, aboutappblue, 'About Application')}
-              </div>
-            </div>  
+      <div className="flex flex-col gap-8 p-2">
+
+        <div className="flex flex-col gap-5">
+          <h2 className="text-md mt-4 font-bold font-poppins text-[17px]">Main</h2>
+
+          {renderButton("dashboard", FiHome, "Dashboard")}
+          {renderButton("profile", FiUser, "Profile")}
+          {renderButton("meal-plan", RiFileList2Line, "Meal Plan")}
+          {renderButton("messages", FiMessageCircle, "Messages")}
+          {renderButton("analytics", MdOutlineAnalytics, "Analytics")}
+          {renderButton("subscription", AiOutlineWallet, "Subscription")}
+        </div>
+
+        <div className="flex flex-col gap-8 mt-7">
+          <h2 className="text-md font-bold font-poppins text-[17px]">Settings & Help</h2>
+
+          {renderButton("settings", FiSettings, "Settings")}
+          {renderButton("support", FiHelpCircle, "Help & Support")}
+          {renderButton("about", FiHelpCircle, "About Application")}
+        </div>
+      </div>
     </div>
   );
 }
 
 export default Sidebar;
+
+

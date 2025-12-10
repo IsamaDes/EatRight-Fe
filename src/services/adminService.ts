@@ -46,3 +46,9 @@ export const assignNutritionist = async (clientId: string, nutritionistId: strin
   return response.data;
 };
 
+export const getClientProfile = async(clientId: string) => {
+  const response = await axiosInstance.get(`/admin/client/${clientId}`);
+  console.log(response);
+  return response.data;
+}
+

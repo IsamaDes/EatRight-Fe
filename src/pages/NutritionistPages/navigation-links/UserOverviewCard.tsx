@@ -28,10 +28,8 @@ const NutritionistOverviewCard = ({ user }: NutritionistOverviewCardProps) => {
   };
 
   const handleLogout = () => {
-    // Clear user data
     localStorage.removeItem('user_data');
     localStorage.removeItem('token');
-    // Redirect to login
     window.location.href = '/login';
   };
 

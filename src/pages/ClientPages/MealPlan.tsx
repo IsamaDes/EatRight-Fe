@@ -12,12 +12,10 @@ export default function MealPlan() {
 
 
   useEffect(() => {
-    const clientId = localStorage.getItem('userId') || '';
-    if (!clientId) return;
 
     const fetchData = async () => {
       try {
-        const response = await getClientMealSchedule(clientId);
+        const response = await getClientMealSchedule();
         const groupedWeeks: MealDay[][] = [];
         for (let i = 0; i < response.length; i += 7 ){
           groupedWeeks.push(response.slice(i, i+7))

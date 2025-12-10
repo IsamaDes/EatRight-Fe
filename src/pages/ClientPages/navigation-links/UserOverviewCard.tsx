@@ -26,20 +26,16 @@ interface UserOverviewCardProps {
 const UserOverviewCard = ({ user }: UserOverviewCardProps) => {
 
   const handleViewProfile = () => {
-    // Add your navigation logic here
-    window.location.href = '/profile';
+    window.location.href = '/client/profile';
   };
 
   const handleSettings = () => {
-    // Add your navigation logic here
-    window.location.href = '/settings';
+    window.location.href = '/client/settings';
   };
 
   const handleLogout = () => {
-    // Clear user data
     localStorage.removeItem('user_data');
     localStorage.removeItem('token');
-    // Redirect to login
     window.location.href = '/login';
   };
 

@@ -31,19 +31,16 @@ export interface MealDay {
   meals: Meal[];
 }
 
-// mealPlanService.ts
 export const getClientMealPlans = async (clientId: string) => {
-  const res = await axiosInstance.get(`/meal-plans/client/${clientId}`, {
+  const res = await axiosInstance.get(`/client/meal-plans/${clientId}`, {
     params: { status: 'active' }
   });
-
   const data = res.data?.data?.[0];
   if (!data) throw new Error('No active meal plan found');
   return data;
 };
 
 export const getClientMealSchedule = async (
-  clientId: string,
   start?: string,
   end?: string
 ): Promise<MealDay[]> => {
@@ -51,6 +48,6 @@ export const getClientMealSchedule = async (
   if (start) params.append('start_date', start);
   if (end) params.append('end_date', end);
 
-  const res = await axiosInstance.get(`/meal-plans/client/${clientId}/meal-schedule?${params.toString()}`);
+  const res = await axiosInstance.get(`/client/meal-schedule?${params.toString()}`);
   return res.data?.data?.rows || [];
 };

@@ -1,121 +1,307 @@
+// import React, { useState, useEffect } from "react";
+// import { useLocation, useNavigate } from "react-router-dom";
+
+// // Heroicons
+// import {
+//   HomeIcon,
+//   UserCircleIcon,
+//   UsersIcon,
+//   ChatBubbleBottomCenterTextIcon,
+//   Cog6ToothIcon,
+//   InformationCircleIcon,
+// } from "@heroicons/react/24/outline";
+
+// import {
+//   HomeIcon as HomeIconSolid,
+//   UserCircleIcon as UserCircleIconSolid,
+//   UsersIcon as UsersIconSolid,
+//   ChatBubbleBottomCenterTextIcon as ChatBubbleBottomCenterTextIconSolid,
+//   Cog6ToothIcon as Cog6ToothIconSolid,
+//   InformationCircleIcon as InformationCircleIconSolid,
+//   ChevronDownIcon,
+// } from "@heroicons/react/24/solid";
+
+// function Sidebar() {
+//   const location = useLocation();
+//   const navigate = useNavigate();
+
+//   const [activeButton, setActiveButton] = useState<string | null>(null);
+//   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+//   useEffect(() => {
+//     const path = location.pathname;
+//     setActiveButton(path.slice(1) || "dashboard");
+//     sessionStorage.setItem("location", path);
+//   }, [location]);
+
+//   const handleButtonClick = (buttonName: string) => {
+//     if (buttonName === "consultant") {
+//       navigate("/admin/consultant/view-departments");
+//       setActiveButton(buttonName);
+//       setOpenDropdown(openDropdown === buttonName ? null : buttonName);
+//       return;
+//     }
+
+//     const path = buttonName === "dashboard" ? "/admin" : buttonName;
+//     navigate(path);
+
+//     setActiveButton(buttonName);
+//     sessionStorage.setItem("location", path);
+//     setOpenDropdown(null);
+//   };
+
+//   const renderButton = (
+//   buttonName: string,
+//   outlineIcon: React.ElementType,
+//   solidIcon: React.ElementType,
+//   label: string,
+//   hasDropdown: boolean = false
+// ) => {
+//   const isActive = activeButton === buttonName;
+//   const Icon = isActive ? solidIcon : outlineIcon;
+
+//   return (
+//     <>
+//       <button
+//         className={`
+//           flex items-center mb-2 p-2 rounded-lg w-full transition
+//           ${isActive ? "bg-emerald-100 text-emerald-700" : "text-white"}
+//         `}
+//         onClick={() => handleButtonClick(buttonName)}
+//       >
+//         <Icon
+//           className={`
+//             h-7 w-7 mr-3 transition 
+//             ${isActive ? "text-emerald-700" : "text-white"}
+//           `}
+//         />
+
+//         <div className="flex items-center gap-4">
+//           <p
+//             className={`font-poppins text-[15px] font-medium transition ${
+//               isActive ? "text-emerald-700" : "text-white"
+//             }`}
+//           >
+//             {label}
+//           </p>
+
+//           {hasDropdown && (
+//             <ChevronDownIcon
+//               className={`h-5 w-5 transition-transform duration-300 ${
+//                 openDropdown === buttonName ? "rotate-180" : ""
+//               } ${
+//                 isActive ? "text-emerald-700" : "text-white"
+//               }`}
+//             />
+//           )}
+//         </div>
+//       </button>
+
+//       {openDropdown === buttonName && (
+//         <div className="ml-10 text-sm text-gray-200">
+//           Dropdown Content Here
+//         </div>
+//       )}
+//     </>
+//   );
+// };
+
+
+//   return (
+//     <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3">
+
+//       <div className="flex gap-2">
+//         <img src="/eatright.svg" alt="EatRight Logo" className="mx-auto" />
+//       </div>
+
+//       {/* Menu */}
+//       <div className="flex bg-emerald-600 flex-col gap-8 p-2 rounded-lg">
+
+//         <div className="flex flex-col gap-5">
+//           <h2 className="text-md mt-4 font-bold font-poppins text-[17px]">
+//             Main
+//           </h2>
+
+//           {renderButton("dashboard", HomeIcon, HomeIconSolid, "Dashboard")}
+//           {renderButton("profile", UserCircleIcon, UserCircleIconSolid, "Profile")}
+//           {renderButton("nutritionists", UsersIcon, UsersIconSolid, "Nutritionists")}
+//           {renderButton("clients", UsersIcon, UsersIconSolid, "Clients")}
+//           {renderButton(
+//             "messages",
+//             ChatBubbleBottomCenterTextIcon,
+//             ChatBubbleBottomCenterTextIconSolid,
+//             "Messages"
+//           )}
+//         </div>
+
+//         <div className="flex flex-col gap-6">
+//           <h2 className="text-md font-bold font-poppins text-[17px]">
+//             Settings & Help
+//           </h2>
+
+//           {renderButton("settings", Cog6ToothIcon, Cog6ToothIconSolid, "Settings")}
+//           {renderButton(
+//             "about",
+//             InformationCircleIcon,
+//             InformationCircleIconSolid,
+//             "About"
+//           )}
+//         </div>
+
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Sidebar;
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate} from "react-router-dom";
-import dashboard from "./SideImages/dashboard.svg"
-import dashboardblue from "./SideImages/dashboardblue.svg"
-import departmentlogo from "./SideImages/departmentwhite.svg"
-import departmentblue from "./SideImages/departmentblue.svg"
-import notifications from "./SideImages/notifications.svg"
-import notificationsblue from "./SideImages/notificationsblue.svg"
-import settingsIcon from "./SideImages/settings.svg"
-import settingsblue from "./SideImages/settingsblue.svg"
-import about from "./SideImages/about.svg"
-import aboutappblue from "./SideImages/aboutapplicationblue.svg"
-import anglebutton from "./SideImages/anglebuttonwhite.svg"
-import anglebuttonblue from "./SideImages/anglebuttonblue.svg"
- 
+import { useLocation, useNavigate } from "react-router-dom";
+
+// Heroicons
+import {
+  HomeIcon,
+  UserCircleIcon,
+  UsersIcon,
+  ChatBubbleBottomCenterTextIcon,
+  Cog6ToothIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
+
+import {
+  HomeIcon as HomeIconSolid,
+  UserCircleIcon as UserCircleIconSolid,
+  UsersIcon as UsersIconSolid,
+  ChatBubbleBottomCenterTextIcon as ChatBubbleBottomCenterTextIconSolid,
+  Cog6ToothIcon as Cog6ToothIconSolid,
+  InformationCircleIcon as InformationCircleIconSolid,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
+
 function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [activeButton, setActiveButton] = useState<string | null>(null);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-   useEffect(() => {
-      const path = location.pathname
-  
-      setActiveButton(path.slice(1) || "dashboard")
-  
-      sessionStorage.setItem("location", path)
-    }, [location])
-
- 
-
-  const handleButtonClick = (buttonName: string) => {
-    if (buttonName === "consulant") {
-      navigate("/admin/consultant/view-departments")
-      setActiveButton(buttonName)
-      setOpenDropdown(openDropdown === buttonName ? null : buttonName)
-    } else {
-      const path = buttonName === "dashboard" ? "/admin" : buttonName
-      navigate(path)
-      setActiveButton(buttonName)
-      sessionStorage.setItem("location", path)
-      setOpenDropdown(null)
-    }
+  // Map routes to button names
+  const routeMap: Record<string, string> = {
+    "/admin": "dashboard",
+    "/admin/profile": "profile",
+    "/admin/nutritionists": "nutritionists",
+    "/admin/clients": "clients",
+    "/admin/messages": "messages",
+    "/admin/settings": "settings",
+    "/admin/about": "about",
   };
 
+  useEffect(() => {
+    const current = routeMap[location.pathname];
+    if (current) {
+      setActiveButton(current);
+    }
+  }, [location.pathname]);
 
- 
-    const renderButton = (
-      buttonName: string,
-      icon: string,
-      activeIcon: string,
-      label: string,
-      hasDropdown: boolean = false,
-    ) => (
+  const handleButtonClick = (buttonName: string) => {
+    const path =
+      buttonName === "dashboard"
+        ? "/admin"
+        : `/admin/${buttonName}`;
+
+    navigate(path);
+    setActiveButton(buttonName);
+    setOpenDropdown(null);
+  };
+
+  const renderButton = (
+    buttonName: string,
+    outlineIcon: React.ElementType,
+    solidIcon: React.ElementType,
+    label: string,
+    hasDropdown: boolean = false
+  ) => {
+    const isActive = activeButton === buttonName;
+    const Icon = isActive ? solidIcon : outlineIcon;
+
+    return (
       <>
         <button
-          className={`flex items-center mb-2 p-2 rounded-lg ${activeButton === buttonName ? "bg-white" : ""}`}
+          className={`
+            flex items-center mb-2 p-2 rounded-lg w-full transition
+            ${isActive ? "bg-emerald-100 text-emerald-700" : "text-white"}
+          `}
           onClick={() => handleButtonClick(buttonName)}
         >
-          <img
-            src={activeButton === buttonName ? activeIcon : icon}
-            alt={`${label} Logo`}
-            className='h-8 w-8 mr-2'
+          <Icon
+            className={`
+              h-7 w-7 mr-3 transition
+              ${isActive ? "text-emerald-700" : "text-white"}
+            `}
           />
-          <div className='flex gap-4 items-center '>
+
+          <div className="flex items-center gap-4">
             <p
-              className={`${activeButton === buttonName ? "text-lightblue" : ""} font-poppins text-[15px] font-medium leading-[15.4px] text-left`}
+              className={`
+                font-poppins text-[15px] font-medium transition
+                ${isActive ? "text-emerald-700" : "text-white"}
+              `}
             >
               {label}
             </p>
+
             {hasDropdown && (
-              <img
-                src={openDropdown === buttonName ? anglebuttonblue : anglebutton}
-                alt='Angle Button'
-                className={`h-5 w-5 transition-transform duration-300 ${openDropdown === buttonName ? "rotate-180" : ""}`}
+              <ChevronDownIcon
+                className={`
+                  h-5 w-5 transition-transform duration-300
+                  ${openDropdown === buttonName ? "rotate-180" : ""}
+                  ${isActive ? "text-emerald-700" : "text-white"}
+                `}
               />
             )}
           </div>
         </button>
-        {openDropdown === buttonName }
       </>
-    )
-
-
+    );
+  };
 
   return (
-    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3  sm:bg-transparent">
+    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3">
 
-      {/* Logo area */}
-       <div className="flex  gap-2 ">
-        <img
-          src="/eatright.svg"
-          alt="Keep Me Fit Logo"
-          className="mx-auto"
-        />
+      <div className="flex gap-2">
+        <img src="/eatright.svg" alt="EatRight Logo" className="mx-auto" />
       </div>
 
-      {/* Menu area */}
-       <div className="flex bg-emerald-600 flex-col gap-8 p-2 ">
-      
-              <div className="flex flex-col gap-5 ">
-                <div>
-                  <h2 className="text-md mt-4 font-bold mb-2 font-poppins text-[17px] leading-[15.4px] text-left">Main</h2>
-                </div>
-                {renderButton("dashboard", dashboard, dashboardblue, "Dashboard")}
-                {renderButton("profile", dashboard, dashboardblue, "Profile")}
-                {renderButton("consultants", departmentlogo, departmentblue, "Consultants")}
-                {renderButton("clients", departmentlogo, departmentblue, "Clients")}
-                {renderButton("messages", notifications, notificationsblue, "Messages")}
-              </div>
-              <div className="flex flex-col gap-8 mt-7">
-                <div>
-                  <h2 className="text-md font-bold font-poppins text-[17px] leading-[15.4px] text-left">Settings & Help</h2>
-                </div>
-                {renderButton('settings', settingsIcon, settingsblue, 'Settings')}
-                {renderButton('about', about, aboutappblue, 'About')}
-              </div>
-            </div>
+      <div className="flex bg-emerald-600 flex-col gap-8 p-2 rounded-lg">
+
+        <div className="flex flex-col gap-5">
+          <h2 className="text-md mt-4 font-bold font-poppins text-[17px]">Main</h2>
+
+          {renderButton("dashboard", HomeIcon, HomeIconSolid, "Dashboard")}
+          {renderButton("profile", UserCircleIcon, UserCircleIconSolid, "Profile")}
+          {renderButton("nutritionists", UsersIcon, UsersIconSolid, "Nutritionists")}
+          {renderButton("clients", UsersIcon, UsersIconSolid, "Clients")}
+          {renderButton(
+            "messages",
+            ChatBubbleBottomCenterTextIcon,
+            ChatBubbleBottomCenterTextIconSolid,
+            "Messages"
+          )}
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <h2 className="text-md font-bold font-poppins text-[17px]">Settings & Help</h2>
+
+          {renderButton("settings", Cog6ToothIcon, Cog6ToothIconSolid, "Settings")}
+          {renderButton("about", InformationCircleIcon, InformationCircleIconSolid, "About")}
+        </div>
+
+      </div>
     </div>
   );
 }

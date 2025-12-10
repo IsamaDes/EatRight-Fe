@@ -1,66 +1,86 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
- 
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+
+// React Icons
+import { 
+  FiHome, 
+  FiUser, 
+  FiMessageCircle, 
+  FiSettings, 
+  FiHelpCircle 
+} from "react-icons/fi";
+import { RiFileList2Line } from "react-icons/ri";
+import { MdOutlineAnalytics } from "react-icons/md";
+import { AiOutlineLogout } from "react-icons/ai";
 
 function Sidebar() {
-  const [activeButton, setActiveButton] = useState<number | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [activeButton, setActiveButton] = useState<string | null>(null);
 
-  const menuItems = [ 
-   { name: "Overview", icon: "/overview.svg", whiteIcon: "/whiteoverview.svg", link: "/nutritionist" },
-   { name: "My Profile", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/profile" },
-   { name: "Consultation", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/consultation" },
-   { name: "Clients", icon: "/myprofile.svg", whiteIcon: "/whitemyprofile.svg", link: "/nutritionist/clients" },
-   { name: "Messages", icon: "/mymessages.svg", whiteIcon: "/whitemessage.svg", link: "/nutritionist/messages" },
-   { name: "Sign Out", icon: "/signout.svg", whiteIcon: "/whitesignout.svg", link: "/nutritionist/signout" }
-  ];
+  useEffect(() => {
+    const path = location.pathname;
+    const key = path.split("/").pop() || "dashboard";
+    setActiveButton(key);
+    sessionStorage.setItem("location", path);
+  }, [location]);
 
-  const handleButtonClick = (index: number) => {
-    setActiveButton(index === activeButton ? null : index);
+  const handleButtonClick = (buttonName: string, link: string) => {
+    if (buttonName === "logout") {
+      localStorage.removeItem("user_data");
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      return;
+    }
+    navigate(link);
+    setActiveButton(buttonName);
+    sessionStorage.setItem("location", link);
+  };
+
+  const renderButton = (
+    buttonName: string,
+    Icon: React.ElementType,
+    label: string,
+    link: string
+  ) => {
+    const isActive = activeButton === buttonName;
+    return (
+      <div
+        onClick={() => handleButtonClick(buttonName, link)}
+        className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200
+          ${isActive ? "bg-green-200 text-green-800" : "text-white hover:bg-green-700/30"}
+        `}
+      >
+        <Icon size={22} className={`${isActive ? "text-green-800" : "text-white"}`} />
+        <span className={`font-poppins text-[15px] font-medium ${isActive ? "text-green-800" : "text-white"}`}>
+          {label}
+        </span>
+      </div>
+    );
   };
 
   return (
-    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3 md:bg-white sm:bg-transparent">
-
-      {/* Logo area */}
+    <div className="text-white p-3 flex flex-col h-screen overflow-y-auto gap-3 sm:bg-transparent">
       <div className="flex gap-2">
-        <img
-          src="/eatright.svg"
-          alt="Keep Me Fit Logo"
-          className="mx-auto"
-        />
-
+        <img src="/eatright.svg" alt="EatRight Logo" className="mx-auto" />
       </div>
 
-      {/* Menu area */}
-   
-        <div className="flex flex-col gap-2 bg-[#FFFFFF] h-[450px]">
-          {menuItems.map((item, index) => (
-            <Link to={item.link} key={index}>
-              <div
-                onClick={() => handleButtonClick(index)}
-                className={`flex items-center gap-4 p-2 rounded-lg cursor-pointer h-[44px] text-[15px] font-500 font-poppins ${
-                  activeButton === index ? "text-white" : "text-[#637A63]"
-                }`}
-                style={
-                  activeButton === index
-                    ? {
-                        background:
-                          "linear-gradient(249deg, #ABD27B 9.4%, #39B54A 89.96%)"
-                      }
-                    : {}
-                }
-              >
-                <img
-                  src={activeButton === index ? item.whiteIcon : item.icon}
-                  alt={item.name}
-                  className="w-[24px] h-[24px]"
-                />
-                <span>{item.name}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-    
+      <div className="flex flex-col gap-5 mt-5">
+        <h2 className="text-md font-bold font-poppins text-[17px]">Main</h2>
+        {renderButton("dashboard", FiHome, "Overview", "/nutritionist")}
+        {renderButton("profile", FiUser, "My Profile", "/nutritionist/profile")}
+        {renderButton("clients", FiUser, "Clients", "/nutritionist/clients")}
+        {renderButton("messages", FiMessageCircle, "Messages", "/nutritionist/messages")}
+        {renderButton("analytics", MdOutlineAnalytics, "Analytics", "/nutritionist/analytics")}
+      </div>
+
+      <div className="flex flex-col gap-5 mt-10">
+        <h2 className="text-md font-bold font-poppins text-[17px]">Settings & Help</h2>
+        {renderButton("settings", FiSettings, "Settings", "/nutritionist/settings")}
+        {renderButton("support", FiHelpCircle, "Help & Support", "/nutritionist/support")}
+        {renderButton("about", FiHelpCircle, "About", "/nutritionist/about")}
+        {renderButton("logout", AiOutlineLogout, "Sign Out", "/nutritionist/logout")}
+      </div>
     </div>
   );
 }
