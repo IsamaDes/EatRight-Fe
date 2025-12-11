@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getClientProfile } from "../../services/clientService";
 
+interface AssignedNutritionistProfile {
+  certification: string; 
+  experienceYears: number | null
+  user: AssignedNutritionistUser
+}
+interface AssignedNutritionistUser {
+  email: string;
+  name: string;
+}
+
 interface ClientData {
   id: string;
   clientId: string;
@@ -11,7 +21,7 @@ interface ClientData {
   age: number | null;
   healthGoal: string | null;
   subscription: string | null;
-  assignedNutritionistId: string | null;
+  assignedNutritionist: AssignedNutritionistProfile | null;
 }
 
 const ClientProfile = () => {
@@ -24,6 +34,7 @@ const ClientProfile = () => {
     const fetchClientProfile = async () => {
       try {
         const response = await getClientProfile();
+        console.log(response.data)
        
         if (response.success) {
           setClientData(response.data);
@@ -134,9 +145,7 @@ const ClientProfile = () => {
             <div>
               <p className="text-sm font-semibold text-gray-600">Assigned Nutritionist</p>
               <p className="text-lg text-gray-800">
-                {clientData.assignedNutritionistId ?? (
-                  <span className="text-gray-400 italic">Not assigned</span>
-                )}
+                {clientData.assignedNutritionist?.user?.name || "No nutritionist assigned"}
               </p>
             </div>
           </div>

@@ -6,19 +6,37 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 
-interface UserData {
-  _id: string;
+interface ClientProfileData {
+  id: string;
+  userId: string;
+  healthGoal?: string;
+  age?: number;
+  subscription?: string | null;
+  assignedNutritionistId?: string | null;
+}
+
+interface NutritionistProfileData {
+  id: string;
+  userId: string;
+  certification: string;
+  experienceYears: number;
+}
+
+export interface UserData {
+  id: string;
   name: string;
   email: string;
   createdAt: string;
-  assignedNutritionist?: string | null;
+  clientProfile?: ClientProfileData | null;
+  nutritionistProfile?: NutritionistProfileData | null;
+  adminProfile?: { id: string } | null;
 }
 
 interface DashboardData {
   total: { clients: number; admins: number; nutritionists: number };
   clients: UserData[];
-  nutritionist: UserData[];
-  admin: UserData[];
+  nutritionists: UserData[];
+  admins: UserData[];
 }
 
 export default function AdminDashboard() {
@@ -33,6 +51,7 @@ export default function AdminDashboard() {
     const fetchData = async () => {
       try {
         const res = await getAdminDashboard();
+        console.log(res)
         setData(res);
         toast.success("Dashboard loaded successfully!");
       } catch {
@@ -52,9 +71,9 @@ export default function AdminDashboard() {
       <ToastContainer />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <StatCard title="Clients" value={data.total.clients} color="red" icon={<UserGroupIcon className="w-8 h-8 text-white"/>} />
-        <StatCard title="Admins" value={data.total.admins} color="green" icon={<UserIcon className="w-8 h-8 text-white"/>} />
-        <StatCard title="Nutritionists" value={data.total.nutritionists} color="blue" icon={<UserGroupIcon className="w-8 h-8 text-white"/>} />
+        <StatCard title="Clients" value={data.total.clients} color="green" icon={<UserGroupIcon className="w-8 h-8 text-white"/>} />
+        <StatCard title="Admins" value={data.total.admins} color="red" icon={<UserIcon className="w-8 h-8 text-white"/>} />
+        <StatCard title="Nutritionists" value={data.total.nutritionists} color="green" icon={<UserIcon className="w-8 h-8 text-white"/>} />
        
       </div>
 
@@ -64,14 +83,14 @@ export default function AdminDashboard() {
           <UserList
             title="Clients"
             users={data.clients}
-            selectedId={selectedClient?._id}
+            selectedId={selectedClient?.id}
             onSelect={setSelectedClient}
             navigate={navigate}
           />
           <UserList
             title="Nutritionists"
-            users={data.nutritionist}
-            selectedId={selectedNutritionist?._id}
+            users={data.nutritionists}
+            selectedId={selectedNutritionist?.id}
             onSelect={setSelectedNutritionist}
             navigate={navigate}
           />
@@ -117,22 +136,22 @@ function UserList({
 }) {
   const handleUserClick = (user: UserData) => {
     onSelect(user); 
-    navigate(`/admin/${title.toLowerCase()}-profile/${user._id}`);
+    navigate(`/admin/${title.toLowerCase()}-profile/${user.id}`);
   };
 
   return (
     <div className="bg-gray-50 rounded-xl shadow p-4 flex flex-col">
       <h3 className="text-xl font-semibold mb-3">{title}</h3>
       <ul className="divide-y divide-gray-200 overflow-y-auto max-h-80">
-        {users.length === 0 && (
+        {users?.length === 0 && (
           <p className="text-gray-400 text-center py-4">No {title.toLowerCase()} found.</p>
         )}
-        {users.map((u) => (
+        {users?.map((u) => (
           <li
-            key={u._id}
+            key={u.id}
             onClick={() => handleUserClick(u)}
             className={`flex justify-between items-center p-3 rounded-lg cursor-pointer transition ${
-              selectedId === u._id ? "bg-green-100 shadow-inner" : "hover:bg-gray-100"
+              selectedId === u.id ? "bg-green-100 shadow-inner" : "hover:bg-gray-100"
             }`}
           >
             <div>

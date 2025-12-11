@@ -43,7 +43,7 @@ export const assignNutritionist = async (clientId: string, nutritionistId: strin
     clientId,
     nutritionistId,
   });
-  return response.data;
+  return response.data.client;
 };
 
 export const getClientProfile = async(clientId: string) => {

@@ -33,6 +33,7 @@ import ClientsPage from "./pages/AdminPages/Clients";
 import Nutritionists from "./pages/AdminPages/Nutritionists";
 import NutritionistSettings from "./pages/NutritionistPages/Settings";
 import ClientProfilePage from "./pages/AdminPages/ClientProfile";
+import AssignNutritionistPage from "./pages/AdminPages/AssignNutritionist";
 
 const App = () => {
   return (
@@ -59,7 +60,13 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />
+            <Route path="notifications" element={<Notifications />} />
             <Route path="nutritionists" element={<Nutritionists />} />
+            <Route
+              path="assign-nutritionist/:clientId"
+              element={<AssignNutritionistPage />}
+            />
+
             <Route path="messages" element={<Messages />} />
           </Route>
 
