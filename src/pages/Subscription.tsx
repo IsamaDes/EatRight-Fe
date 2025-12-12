@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { initializeSubscriptionPayment, createSubscription } from '../services/subscriptionService';
 import { Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const plans = [
   {
@@ -20,7 +21,6 @@ const plans = [
   {
     title: 'Premium Plan',
     price: '90,000',
-    duration: '1 Month',
     features: [
       'Initial Consultation',
       '3 Weeks Meal Plan',
@@ -64,22 +64,21 @@ const billingDurations: Record<Duration, { interval: 'monthly' | 'quarterly' | '
 
 
 const SubscriptionPlans = () => {
+  const navigate = useNavigate();
   const [selectedDuration, setSelectedDuration] = useState<Duration>('1 Month');
   const [subscribingPlan, setSubscribingPlan] = useState<string | null>(null);
   const durations: Duration[] = ['1 Month', '3 Months', '6 Months', '1 Year'];
-  const [subscriberId, setSubscriberId] = useState<string | null>(null);
-  const [organizationId, setOrganizationId] = useState<string | null>(null);
+
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
-  const clientId = localStorage.getItem('userId');
-  const orgId = localStorage.getItem('orgId');
+
   const token = localStorage.getItem('access_token');
 
-  setSubscriberId(clientId);
-  setOrganizationId(orgId);
+  
+
   setAccessToken(token);
 }, []);
 
@@ -90,8 +89,7 @@ const SubscriptionPlans = () => {
     const numericAmount = Number(plan.price.replace(/,/g, ''));
 
     const payload = {
-      subscriber_id: subscriberId,
-      organization_id: organizationId,
+     
       plan_name: plan.title,
       amount: numericAmount,
       billing_interval: billing.interval,
@@ -106,13 +104,13 @@ const SubscriptionPlans = () => {
 
     try {
       const response = await createSubscription(payload);
-      console.log('Subscription created:', response);
-      const subscriptionId = response.data.id;
+      console.log('Subscription created:', response.id);
+      const subscriptionId = response.id;
 
       if (subscriptionId) {
         const paymentPayload = {
           gateway: 'paystack',
-          redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success?atn=${accessToken}`,
+          redirect_url: `${import.meta.env.VITE_PUBLIC_BASE_URL}/payment-success?atn=${accessToken}`,
           currency: 'NGN',
           metadata: {
             auto_renew: true,
@@ -122,10 +120,12 @@ const SubscriptionPlans = () => {
 
         const paymentResponse = await initializeSubscriptionPayment(subscriptionId, paymentPayload);
         console.log('Payment initialized:', paymentResponse);
-        const paymentUrl = paymentResponse?.data?.payment?.authorization_url;
-
+        const paymentUrl = paymentResponse.data.authorization_url;
+        console.log("paymenturl", paymentUrl)
         if (paymentUrl) {
-          window.location.href = paymentUrl;
+           navigate("/client/payment-init", {
+           state: { paymentUrl },
+         });
         } else {
           console.error('Payment URL not found in response');
         }

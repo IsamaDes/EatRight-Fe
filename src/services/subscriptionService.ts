@@ -5,7 +5,7 @@ export interface SubscriptionQueryParams {
   organization_id?: string;
   search?: string;
   status?: string;
-  subscriber_id?: string;
+  subscriberId?: string;
   limit?: number;
   page?: number;
 }
@@ -13,9 +13,10 @@ export interface SubscriptionQueryParams {
 type BillingInterval = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 
+
+
 export interface CreateSubscriptionPayload {
-  subscriber_id: string | null;
-  organization_id: string | null;
+  // subscriberId: string | null;
   plan_name: string;
   amount: number;
   billing_interval: BillingInterval;
@@ -45,7 +46,7 @@ export const initializeSubscriptionPayment = async (
 ) => {
   try {
     const response = await axiosInstance.post(
-      `/subscriptions/${subscriptionId}/payment`,
+      `/subscriptions/${subscriptionId}/initialize-payment`,
       payload
     );
     return response.data;
@@ -66,7 +67,7 @@ export const createSubscription = async (
   payload: CreateSubscriptionPayload
 ) => {
   try {
-    const response = await axiosInstance.post('/subscriptions', payload);
+    const response = await axiosInstance.post('/subscriptions/create-subscription', payload);
     return response.data;
   } catch (error) {
     console.error('Error creating subscription:', error);

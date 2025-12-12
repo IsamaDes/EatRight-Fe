@@ -34,6 +34,8 @@ import Nutritionists from "./pages/AdminPages/Nutritionists";
 import NutritionistSettings from "./pages/NutritionistPages/Settings";
 import ClientProfilePage from "./pages/AdminPages/ClientProfile";
 import AssignNutritionistPage from "./pages/AdminPages/AssignNutritionist";
+import PaymentInitialization from "./pages/ClientPages/PaymentInitialization";
+import PaymentSuccess from "./pages/ClientPages/PaymentSucess";
 
 const App = () => {
   return (
@@ -78,11 +80,13 @@ const App = () => {
             <Route path="analytics" element={<HealthAnalytics />} />
             <Route path="messages" element={<Messages />} />{" "}
             <Route path="subscription" element={<SubscriptionPlans />} />
+            <Route path="payment-init" element={<PaymentInitialization />} />
             <Route path="support" element={<ClientSupport />} />
             <Route path="meal-plan" element={<MealPlan />} />
             <Route path="about" element={<About />} />
             <Route path="settings" element={<Settings />} />
             <Route path="notifications" element={<Notifications />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
           </Route>
 
           <Route path="/nutritionist" element={<NutritionistLayout />}>
