@@ -36,6 +36,7 @@ import ClientProfilePage from "./pages/AdminPages/ClientProfile";
 import AssignNutritionistPage from "./pages/AdminPages/AssignNutritionist";
 import PaymentInitialization from "./pages/ClientPages/PaymentInitialization";
 import PaymentSuccess from "./pages/ClientPages/PaymentSucess";
+import CreateMealPlan from "./pages/NutritionistPages/CreateMealplan";
 
 const App = () => {
   return (
@@ -102,6 +103,10 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="settings" element={<NutritionistSettings />} />
             <Route path="notifications" element={<Notifications />} />
+            <Route
+              path="create-mealplan/:clientId/:clientName"
+              element={<CreateMealPlan />}
+            />
           </Route>
         </Routes>
       </Router>

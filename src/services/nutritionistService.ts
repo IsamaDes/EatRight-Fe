@@ -1,16 +1,38 @@
 // src/services/nutritionistService.ts
 import axiosInstance from "../utils/AxiosInstance";
 
+
+// Define the meal interface
+interface Meal {
+  timeOfDay: string;
+  typeOfMeal: string;
+  food: string;
+  nutritionalContent: string;
+}
+
+// Define the daily meal plan interface
+interface DailyMealPlan {
+  dayOfWeek: string;
+  meals: Meal[];
+}
+
+// Define the weekly meal plan interface
+interface WeeklyMealPlan {
+  weekNumber: number;
+  dailyPlans: DailyMealPlan[];
+}
+
+// Main meal plan data interface
 export interface MealPlanData {
   clientId: string;
-  clientName: string;
-  nutritionistName: string;
+  dateRangeStart: string; // ISO string format
+  dateRangeEnd: string; // ISO string format
+  numberOfWeeks: number;
   healthGoal: string;
   nutritionalRequirement: string;
-  dateRange: { start: string; end: string };
-  numberOfWeeks: number;
-  weeklyMealPlans: any[];
+  weeklyMealPlans: WeeklyMealPlan[];
 }
+
 
 export const getNutritionistDashboard = async () => {
   const res = await axiosInstance.get("/nutritionist/dashboard");
@@ -36,7 +58,7 @@ export const getClientsForNutritionist = async () => {
 };
 
 export const createMealPlan = async (mealPlanData: MealPlanData) => {
-  const { data } = await axiosInstance.post("/nutritionist/create", mealPlanData);
+  const { data } = await axiosInstance.post("/nutritionist/create-mealplan", mealPlanData);
   return data;
 };
 
