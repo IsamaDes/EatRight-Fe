@@ -39,6 +39,7 @@ import PaymentInitialization from "./pages/ClientPages/PaymentInitialization";
 import PaymentSuccess from "./pages/ClientPages/PaymentSucess";
 import CreateMealPlan from "./pages/NutritionistPages/CreateMealplan";
 import ClientSettings from "./pages/ClientPages/Settings";
+import ClientAnalytics from "./pages/ClientPages/analytics";
 
 const App = () => {
   return (
@@ -80,7 +81,7 @@ const App = () => {
             <Route path="profile" element={<ClientProfile />} />
             <Route path="edit-profile" element={<ClientProfileUpdate />} />
             <Route path="dashboard" element={<ClientDashboard />} />
-            <Route path="analytics" element={<HealthAnalytics />} />
+            <Route path="analytics" element={<ClientAnalytics />} />
             <Route path="messages" element={<Messages />} />{" "}
             <Route path="subscription" element={<SubscriptionPlans />} />
             <Route path="payment-init" element={<PaymentInitialization />} />
