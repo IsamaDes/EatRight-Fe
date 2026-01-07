@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { initializeSubscriptionPayment, createSubscription } from '../services/subscriptionService';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getClientProfile } from '../services/clientService';
+import { ClientData } from './ClientPages/Profile';
+
+
 
 const plans = [
   {
@@ -65,6 +69,8 @@ const billingDurations: Record<Duration, { interval: 'monthly' | 'quarterly' | '
 
 const SubscriptionPlans = () => {
   const navigate = useNavigate();
+  const [clientData, setClientData] = useState<ClientData | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<Duration>('1 Month');
   const [subscribingPlan, setSubscribingPlan] = useState<string | null>(null);
   const durations: Duration[] = ['1 Month', '3 Months', '6 Months', '1 Year'];
@@ -77,10 +83,29 @@ const SubscriptionPlans = () => {
 
   const token = localStorage.getItem('access_token');
 
-  
-
   setAccessToken(token);
 }, []);
+
+  useEffect(() => {
+    const fetchClientProfile = async () => {
+      try {
+        const response = await getClientProfile();
+        console.log(response.data)
+       
+        if (response.success) {
+          setClientData(response.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch client profile", err);
+        setError("Failed to load profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchClientProfile();
+  }, []);
+
 
   const handleSubscribe = async (plan: typeof plans[number]) => {
     setLoading(true);
@@ -89,7 +114,7 @@ const SubscriptionPlans = () => {
     const numericAmount = Number(plan.price.replace(/,/g, ''));
 
     const payload = {
-     
+      subscriberId: clientData?.clientId,
       plan_name: plan.title,
       amount: numericAmount,
       billing_interval: billing.interval,

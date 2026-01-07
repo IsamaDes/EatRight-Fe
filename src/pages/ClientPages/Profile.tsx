@@ -7,12 +7,18 @@ interface AssignedNutritionistProfile {
   experienceYears: number | null
   user: AssignedNutritionistUser
 }
+
 interface AssignedNutritionistUser {
   email: string;
   name: string;
 }
 
-interface ClientData {
+export interface ClientSubscription {
+   planName: string,
+   billingInterval: string,
+}
+
+export interface ClientData {
   id: string;
   clientId: string;
   name: string;
@@ -20,7 +26,7 @@ interface ClientData {
   role: string;
   age: number | null;
   healthGoal: string | null;
-  subscription: string | null;
+  subscription: ClientSubscription | null;
   assignedNutritionist: AssignedNutritionistProfile | null;
 }
 
@@ -135,11 +141,11 @@ const ClientProfile = () => {
 
             <div>
               <p className="text-sm font-semibold text-gray-600">Subscription Status</p>
-              <p className="text-lg text-gray-800">
+              {/* <p className="text-lg text-gray-800">
                 {clientData.subscription ?? (
                   <span className="text-gray-400 italic">No active subscription</span>
                 )}
-              </p>
+              </p> */}
             </div>
 
             <div>

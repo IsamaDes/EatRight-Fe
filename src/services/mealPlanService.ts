@@ -1,53 +1,52 @@
 import axiosInstance from '../utils/AxiosInstance';
 
-export interface FoodItem {
-  food_name: string;
-  quantity: string;
-  calories: number | null;
-  protein: number;
-  carbs: number;
-  fat: number;
-  notes: string;
-  source_plan: {
-    id: string;
-    title: string;
-    nutritionist: {
-      id: string;
-      first_name: string;
-      last_name: string;
-    };
-  };
-}
-
+// types/mealPlan.ts
 export interface Meal {
-  meal_type: 'breakfast' | 'lunch' | 'dinner';
-  time: string;
-  foods: FoodItem[];
+  timeOfDay: string;
+  typeOfMeal: string;
+  food: string;
+  nutritionalContent: string;
 }
 
-export interface MealDay {
-  date: string;
-  day: string;
+export interface DailyPlan {
+  dayOfWeek: string;
   meals: Meal[];
 }
 
-export const getClientMealPlans = async (clientId: string) => {
-  const res = await axiosInstance.get(`/client/meal-plans/${clientId}`, {
-    params: { status: 'active' }
-  });
-  const data = res.data?.data?.[0];
+export interface WeeklyMealPlan {
+  weekNumber: number;
+  dailyPlans: DailyPlan[];
+}
+
+export interface MealPlan {
+  clientId: string;
+  dateRangeStart: string;
+  dateRangeEnd: string;
+  numberOfWeeks: number;
+  healthGoal: string;
+  nutritionalRequirement: string;
+  weeklyMealPlans: WeeklyMealPlan[];
+}
+
+
+
+export const getClientMealPlans = async () => {
+  const res = await axiosInstance.get("/client/meal-plans");
+   console.log(res)
+   const data = res.data.data.clientProfile.mealPlans
+
+  console.log(data)
   if (!data) throw new Error('No active meal plan found');
   return data;
 };
 
-export const getClientMealSchedule = async (
-  start?: string,
-  end?: string
-): Promise<MealDay[]> => {
-  const params = new URLSearchParams();
-  if (start) params.append('start_date', start);
-  if (end) params.append('end_date', end);
 
-  const res = await axiosInstance.get(`/client/meal-schedule?${params.toString()}`);
-  return res.data?.data?.rows || [];
-};
+// export const getClientMealPlans = async () => {
+//   const res = await axiosInstance.get("/client/meal-plans");
+//   const mealPlans = res.data.data.clientProfile?.mealPlans || [];
+//   const allWeeklyPlans = mealPlans.flatMap((plan: any) => plan.weeklyMealPlans || []);
+//   if (allWeeklyPlans.length === 0) throw new Error('No active meal plans found');
+//   return allWeeklyPlans;
+// };
+
+

@@ -1,4 +1,3 @@
-// services/subscriptionService.ts
 import axiosInstance from '../utils/AxiosInstance';
 
 export interface SubscriptionQueryParams {
@@ -13,10 +12,8 @@ export interface SubscriptionQueryParams {
 type BillingInterval = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 
-
-
 export interface CreateSubscriptionPayload {
-  // subscriberId: string | null;
+  subscriberId?: string;
   plan_name: string;
   amount: number;
   billing_interval: BillingInterval;
@@ -57,15 +54,11 @@ export const initializeSubscriptionPayment = async (
 };
 
 export const getSubscriptions = async (params: SubscriptionQueryParams) => {
-  const response = await axiosInstance.get('/subscriptions', {
-    params,
-  });
+  const response = await axiosInstance.get('/subscriptions', {params});
   return response.data;
 };
 
-export const createSubscription = async (
-  payload: CreateSubscriptionPayload
-) => {
+export const createSubscription = async (payload: CreateSubscriptionPayload) => {
   try {
     const response = await axiosInstance.post('/subscriptions/create-subscription', payload);
     return response.data;
@@ -75,7 +68,6 @@ export const createSubscription = async (
   }
 };
 
-
 export const cancelSubscription = async (id: string) => {
   return axiosInstance.post(`/subscriptions/${id}/cancel`);
 };
@@ -83,6 +75,7 @@ export const cancelSubscription = async (id: string) => {
 export const suspendSubscription = async (id: string) => {
   return axiosInstance.post(`/subscriptions/${id}/suspend`);
 };
+
 export const renewSubscription = async (id: string) => {
   return axiosInstance.post(`/subscriptions/${id}/renew`);
 };

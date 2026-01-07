@@ -1,5 +1,5 @@
 
-// UserOverviewCard.tsx
+import { ClientData } from "../Profile";
 
 // Define the user types (copy these to your actual component file)
 interface UserProfile {
@@ -11,16 +11,10 @@ interface UserProfile {
   assignedNutritionistId: string | null;
 }
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  profile: UserProfile;
-}
+
 
 interface UserOverviewCardProps {
-  user: User | null;
+  user: ClientData | null;
 }
 
 const UserOverviewCard = ({ user }: UserOverviewCardProps) => {
@@ -69,13 +63,13 @@ const UserOverviewCard = ({ user }: UserOverviewCardProps) => {
           <div className="bg-white rounded-lg p-3 shadow-sm">
             <p className="text-xs text-gray-500 mb-1">Age</p>
             <p className="font-bold text-gray-800">
-              {user?.profile?.age || 'N/A'}
+              {user?.age || 'N/A'}
             </p>
           </div>
           <div className="bg-white rounded-lg p-3 shadow-sm">
             <p className="text-xs text-gray-500 mb-1">Plan</p>
             <p className="font-bold text-gray-800 text-xs capitalize">
-              {user?.profile?.subscription || 'Free'}
+              {user?.subscription?.planName|| 'Free'}
             </p>
           </div>
           <div className="bg-white rounded-lg p-3 shadow-sm">
@@ -89,15 +83,15 @@ const UserOverviewCard = ({ user }: UserOverviewCardProps) => {
       </div>
 
       {/* Health Goal Section */}
-      {user?.profile?.healthGoal && (
+      {user?.healthGoal && (
         <div className="px-4 py-3 border-t border-gray-100">
           <p className="text-xs font-semibold text-gray-600 mb-1">Health Goal</p>
-          <p className="text-sm text-gray-800">{user.profile.healthGoal}</p>
+          <p className="text-sm text-gray-800">{user.healthGoal}</p>
         </div>
       )}
 
       {/* Nutritionist Section */}
-      {user?.profile?.assignedNutritionistId ? (
+      {user?.assignedNutritionist ? (
         <div className="px-4 py-3 border-t border-gray-100 bg-green-50">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">

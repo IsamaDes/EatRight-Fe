@@ -5,35 +5,16 @@ import { getCurrentUser } from '../../../services/userService';
 import eng from "./SideImages/eng.svg"
 import frs from "./SideImages/frs.svg"
 import userpicture from "./SideImages/userPicture.svg"
+import { getClientProfile } from '../../../services/clientService';
+import { ClientData } from '../Profile';
 
-// Update the User interface to match your API response
-interface UserProfile {
-  id: string;
-  userId: string;
-  healthGoal: string | null;
-  age: number | null;
-  subscription: string | null;
-  assignedNutritionistId: string | null;
-}
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  profile: UserProfile;
-}
-
-interface UserResponse {
-  status: string;
-  user: User;
-}
 
 const Headerbar = () => {
   const [notificationDrop, setNotificationDrop] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [userAccountDrop, setUserAccountDrop] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ClientData | null>(null);
   const [language, setLanguage] = useState('En');
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -50,13 +31,9 @@ const Headerbar = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response: UserResponse = await getCurrentUser();
+        const response = await getClientProfile();
+        setUser(response.data);
         console.log('User data:', response);
-        
-        if (response.status === 'success' && response.user) {
-          setUser(response.user);
-          localStorage.setItem('user_data', JSON.stringify(response.user));
-        }
       } catch (err) {
         console.error('User fetch failed:', err);
       }
@@ -69,13 +46,11 @@ const Headerbar = () => {
 
       {/* Welcome */}
       <div className="font-poppins text-sm sm:text-base lg:text-lg font-medium text-gray-800">
-        Welcome {user?.name || 'User'} 👋🏼
+        Welcome {user?.name} 👋🏼
       </div>
 
       {/* Right side */}
       <div className="flex items-center gap-2 sm:gap-3">
-
-        {/* Search */}
         <div className="relative hidden sm:block bg-white">
           <input
             type="text"
@@ -184,7 +159,7 @@ const Headerbar = () => {
                   {user?.name || 'User'}
                 </p>
                 <p className="text-xs text-gray-600 capitalize">
-                  {user?.profile?.subscription || 'Free'}
+                  {user?.subscription?.planName}
                 </p>
               </div>
               <img src="/vangle.svg" alt="" className="w-4 h-4 hidden sm:block" />

@@ -22,7 +22,6 @@ const Login = () => {
 
     try {
       const response = await loginUser({ email, password });
-      console.log(response)
     
       const userRole =  response.data.role;
       const userName =  response.data.name;

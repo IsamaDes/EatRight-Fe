@@ -1,27 +1,29 @@
-// src/types/mealPlan.ts
+
+
 export interface Meal {
-  date?: string;
-  day?: string;
-  time?: string;
-  meal?: string;         // breakfast | lunch | dinner
-  meal_name?: string;
-  ingredients?: string[];
-  calories?: number;
+  id: string;
+  typeOfMeal: 'breakfast' | 'lunch' | 'dinner';
+  food: string;
+  timeOfDay: string;
+  nutritionalContent: string;
 }
 
-export interface Week {
-  meal?: Meal[];
+export interface DailyPlan {
+  id: string;
+  dayOfWeek: string;
+  meals: Meal[];
 }
 
-export interface FoodMenu {
-  _id?: string;
-  date_created?: string;
-  date_range?: string;
-  Nutritionist?: {
-    _id?: string;
-    name?: string;
-    email?: string;
-  };
-  weeks?: number;
-  meal_plan?: Week[];
+export interface WeeklyMealPlan {
+  id: string;
+  weekNumber: number;
+  dailyPlans: DailyPlan[];
+}
+
+export interface MealPlan {
+  id: string;
+  healthGoal: string;
+  dateRangeStart: string;
+  dateRangeEnd: string;
+  weeklyMealPlans: WeeklyMealPlan[];
 }

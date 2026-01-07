@@ -1,323 +1,363 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { getChatMessages, sendMessage } from '../../services/chatService';
-import { io } from "socket.io-client";
+// import React, { useEffect, useState } from "react";
+// import { getClientProfile } from "../../services/clientService";
+// import { getChatMessages, Message } from "../../services/chatService";
+// import { initSocket, ClientSocket } from "../../sockets/socket";
 
-interface Receiver {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  role?: string;
-  message?: string;
-  delivered?: boolean;
-  image?: string;
-}
+// const Messages = () => {
+//   const [client, setClient] = useState("");
+//   const socketRef = React.useRef<ClientSocket | null>(null);
+  
+//   const [nutritionist, setNutritionist] = useState("");
+//   const [currentUserId, setCurrentUserId]= useState("");
+//   const [nutritionistId, setNutritionistId] = useState("");
+//   const [textInput, setTextInput] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [messages, setMessages] = useState<Message[]>([]);
 
-interface Message {
-  id: string;
-  sender_id: string;
-  receiver_id: string;
-  message: string;
-  message_type: string;
-  created_at?: string;
-}
+//   /* ------------------ Load client profile ------------------ */
+//   useEffect(() => {
+//     const fetchClientProfile = async () => {
+//       const response = await getClientProfile();
+//       console.log(response)
+//       setCurrentUserId(response.data.id);
+//       const clientName = response.data.name;
+      
+      
+//       const assignedNutritionist = response.data.assignedNutritionist;
 
-interface ChatContainers {
-  adminChats: Message[];
-  nutritionistChats: Message[];
-}
+//       if (assignedNutritionist) {
+//         setNutritionistId(assignedNutritionist.userId ?? "");
+//         setNutritionist(assignedNutritionist.user.name ?? "");
+//       }
 
-const ChatSpace = () => {
-  const socket = io("http://localhost:5000");
+//       setClient(clientName);
+     
+//     };
 
-  const [chatContainers, setChatContainers] = useState<ChatContainers>({
-    adminChats: [],
-    nutritionistChats: [],
-  });
+//     fetchClientProfile();
+//   }, []);
 
-  const [filterType, setFilterType] = useState<'admin' | 'nutritionist'>('admin');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [loadingMessages, setLoadingMessages] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(true);
-  const [receivers, setReceivers] = useState<Receiver[]>([]);
-  const [selectedReceiverId, setSelectedReceiverId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [newMessage, setNewMessage] = useState('');
+//   /* ------------------ Fetch chat history ------------------ */
+//   useEffect(() => {
+//     if (!nutritionistId) return;
 
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+//     const fetchMessages = async () => {
+//       setLoading(true);
+//       try {
+//         const response = await getChatMessages(nutritionistId);
+//         setMessages(response);
+//       } catch (err) {
+//         console.error("Error fetching messages", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-  // Join user's personal room
-  socket.emit("join_room", userId);
+//     fetchMessages();
+//   }, [nutritionistId]);
 
-  // Listen for incoming messages
+
+//   useEffect(() => {
+//     if (!currentUserId || !nutritionistId) return;
+//     const socket = initSocket();
+//      socketRef.current = socket;
+
+//        const joinRoom = () => {
+//        socket.emit("join_room", {
+//       userId: currentUserId,
+//       receiverId: nutritionistId,
+//     });
+//   };
+
+//     if (socket.connected) {
+//     joinRoom();
+//   }
+//     socket.on("connect", joinRoom);
+
+//   socket.on("new_message", (message: Message) => {
+//     setMessages((prev) => [...prev, message]);
+//   });
+
+//     return () => {
+//     socket.off("connect", joinRoom);
+//     socket.off("new_message");
+//     };
+//   }, [currentUserId, nutritionistId])
+
+
+
+//   /* ------------------ Send message via socket ------------------ */
+//   const handleSendMessage = () => {
+//     if (!textInput.trim() || !nutritionistId) return;
+
+//     const socket = initSocket();
+
+//     socket.emit("sendMessage", {
+//       senderId: currentUserId,
+//       receiverId: nutritionistId,
+//       message: textInput,
+//       messageType: "text",
+//     });
+
+//     setTextInput("");
+//   };
+
+//   /* ------------------ UI ------------------ */
+//   return (
+//     <div className="flex gap-3 justify-between">
+//       <div className="flex flex-col">
+//         <p>ClientName: {client}</p>
+//         <br />
+//         <p>Chatting with: {nutritionist}</p>
+//       </div>
+
+//       <div className="flex flex-col bg-blue-300 w-1/2 p-3">
+//         <div className="flex-1 bg-blue-500 p-2 overflow-y-auto">
+//           {loading ? (
+//             <p>Loading messages...</p>
+//           ) : messages.length === 0 ? (
+//             <p className="text-center text-gray-700">No chat history</p>
+//           ) : (
+//             messages.map((msg) => (
+//               <div
+//                 key={msg.id}
+//                 className={`mb-2 p-2 rounded ${
+//                   msg.senderId === nutritionistId
+//                     ? "bg-white self-start"
+//                     : "bg-green-200 self-end"
+//                 }`}
+//               >
+//                 {msg.message}
+//               </div>
+//             ))
+//           )}
+//         </div>
+
+//         <div className="flex justify-between bg-red-500 p-2">
+//           <input
+//             value={textInput}
+//             onChange={(e) => setTextInput(e.target.value)}
+//             placeholder="type your message here"
+//             className="flex-1 mr-2"
+//           />
+//           <button onClick={handleSendMessage}>Send</button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Messages;
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from "react";
+import { getClientProfile } from "../../services/clientService";
+import { getChatMessages, Message } from "../../services/chatService";
+import { initSocket, ClientSocket } from "../../sockets/socket";
+
+const Messages = () => {
+  const [client, setClient] = useState("");
+  const socketRef = React.useRef<ClientSocket | null>(null);
+  const [roomJoined, setRoomJoined] = useState(false);
+  const [nutritionist, setNutritionist] = useState("");
+  const [currentUserId, setCurrentUserId] = useState("");
+  const [nutritionistId, setNutritionistId] = useState("");
+  const [textInput, setTextInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  /* ------------------ Load client profile ------------------ */
   useEffect(() => {
-    socket.on("new_message", (msg: Message) => {
-      if (msg.sender_id === userId) return;
+    const fetchClientProfile = async () => {
+      const response = await getClientProfile();
+      setCurrentUserId(response.data.id);
 
-      const key = filterType === "admin" ? "adminChats" : "nutritionistChats";
-      if (msg.sender_id === selectedReceiverId) {
-        setChatContainers(prev => ({
-          ...prev,
-          [key]: [...prev[key], msg],
-        }));
+      const clientName = response.data.name;
+      const assignedNutritionist = response.data.assignedNutritionist;
+
+      if (assignedNutritionist) {
+        setNutritionistId(assignedNutritionist.userId ?? "");
+        setNutritionist(assignedNutritionist.user.name ?? "");
       }
-    });
 
-    return () => socket.off("new_message");
-  }, [selectedReceiverId, filterType, userId]);
-
-  const onSelectReceiver = (id: string) => setSelectedReceiverId(id);
-
-  const fetchAndSetReceivers = async (type: 'admin' | 'nutritionist') => {
-    setLoading(true);
-    try {
-      if (type === 'admin') {
-        const res = await fetchAdmins();
-        if (res.success) {
-          const admins = res.data.users.filter((u: any) => u.user_type === 'admin');
-          const formatted = admins.map((admin: any) => ({
-            id: admin.id,
-            name: `${admin.first_name} ${admin.last_name}`,
-            email: admin.email,
-            phone: admin.phone_number || 'N/A',
-            status: admin.status || 'Unknown',
-            role: 'Admin',
-            image: '/default-user.svg',
-            message: '',
-            delivered: true,
-          }));
-          setReceivers(formatted);
-          if (!selectedReceiverId && formatted.length > 0) setSelectedReceiverId(formatted[0].id);
-        }
-      } else {
-        // Fetch only assigned nutritionist
-        const res = await fetchAssignedNutritionist(userId);
-        if (res.success && res.data.nutritionist) {
-          const n = res.data.nutritionist;
-          const formatted = [{
-            id: n.id,
-            name: `${n.first_name || ''} ${n.last_name || ''}`.trim(),
-            email: n.email,
-            status: n.status || 'Unknown',
-            role: 'Nutritionist',
-            image: '/default-user.svg',
-            message: '',
-            delivered: true,
-          }];
-          setReceivers(formatted);
-          if (!selectedReceiverId) setSelectedReceiverId(formatted[0].id);
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching receivers:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAndSetReceivers(filterType);
-  }, [filterType]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
+      setClient(clientName);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+    fetchClientProfile();
   }, []);
 
+  /* ------------------ Fetch chat history ------------------ */
   useEffect(() => {
+    if (!nutritionistId) return;
+
     const fetchMessages = async () => {
-      if (!userId || !selectedReceiverId) return;
-      setLoadingMessages(true);
+      setLoading(true);
       try {
-        const fetched = await getChatMessages(userId, selectedReceiverId);
-        const key = filterType === 'admin' ? 'adminChats' : 'nutritionistChats';
-        setChatContainers(prev => ({
-          ...prev,
-          [key]: fetched as Message[],
-        }));
+        const response = await getChatMessages(nutritionistId);
+        setMessages(response);
       } catch (err) {
-        console.error('Fetch messages failed:', err);
+        console.error("Error fetching messages", err);
       } finally {
-        setLoadingMessages(false);
+        setLoading(false);
       }
     };
+
     fetchMessages();
-  }, [selectedReceiverId, userId, filterType]);
+  }, [nutritionistId]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatContainers, selectedReceiverId]);
+    if (!currentUserId || !nutritionistId) return;
 
-  const handleSendMessage = async () => {
-    if (!userId || !selectedReceiverId || !newMessage.trim()) return;
-    try {
-      const sentMessage: Message = await sendMessage({
-        senderId: userId,
-        receiverId: selectedReceiverId,
-        message: newMessage.trim(),
-        messageType: 'text',
+    const socket = initSocket();
+    socketRef.current = socket;
+
+    const joinRoom = () => {
+      socket.emit("join_room", {
+        userId: currentUserId,
+        receiverId: nutritionistId,
       });
-      const key = filterType === 'admin' ? 'adminChats' : 'nutritionistChats';
-      setChatContainers(prev => ({
-        ...prev,
-        [key]: [...prev[key], sentMessage],
-      }));
-      setNewMessage('');
-    } catch (err) {
-      console.error('Send error:', err);
-    }
+    setRoomJoined(true);
+
+    };
+
+    // if (socket.connected) joinRoom();
+    // socket.on("connect", joinRoom);
+
+      if (socket.connected) {
+    joinRoom();
+  } else {
+    socket.on("connect", joinRoom);
+  }
+
+    socket.on("new_message", (message: Message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off("connect", joinRoom);
+      socket.off("new_message");
+    };
+  }, [currentUserId, nutritionistId]);
+
+  /* ------------------ Send message ------------------ */
+  const handleSendMessage = () => {
+    if (!textInput.trim() || !nutritionistId || !roomJoined) return;
+
+    const socket = initSocket();
+    socket.emit("sendMessage", {
+      senderId: currentUserId,
+      receiverId: nutritionistId,
+      message: textInput,
+      messageType: "text",
+    });
+
+    setTextInput("");
   };
 
-  const formatTimestamp = (timestamp?: string) => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
-  const filteredReceivers = receivers.filter(r =>
-    r.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const activeMessages = [...chatContainers[filterType === 'admin' ? 'adminChats' : 'nutritionistChats']]
-    .sort((a, b) => new Date(a.created_at!).getTime() - new Date(b.created_at!).getTime());
-
+  /* ------------------ UI ------------------ */
   return (
-    <div className="flex w-full h-full">
-      {/* Sidebar */}
-      <div className="flex flex-col w-[30%] p-4 border-r border-gray-200">
-        <div className="flex justify-between mb-4">
-          <div className="flex gap-3 items-center">
-            <div className="text-lg font-semibold">Messaging</div>
-            <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">{filteredReceivers.length}</div>
-          </div>
-          <div className="relative inline-block" ref={dropdownRef}>
-            <button
-              onClick={() => setDropdownOpen(prev => !prev)}
-              className="flex items-center gap-1 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            >
-              Agents
-              <img src="/agentsort.svg" alt="Sort Icon" width={20} height={20} />
-            </button>
-            {dropdownOpen && (
-              <div className="absolute z-10 mt-1 right-0 w-32 bg-white border border-gray-300 rounded shadow-lg">
-                <button onClick={() => { setFilterType('admin'); setDropdownOpen(false); }} className="block w-full px-4 py-2 text-left hover:bg-gray-100">Admins</button>
-                <button onClick={() => { setFilterType('nutritionist'); setDropdownOpen(false); }} className="block w-full px-4 py-2 text-left hover:bg-gray-100">Nutritionist</button>
-              </div>
-            )}
-          </div>
+    <div className="flex h-[85vh] bg-[#f7f8fa] rounded-2xl overflow-hidden shadow-sm border">
+
+      {/* LEFT INFO PANEL */}
+      <div className="w-1/3 border-r bg-white p-6 flex flex-col gap-6">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-gray-400">
+            Client
+          </p>
+          <p className="text-lg font-semibold text-gray-900">{client}</p>
         </div>
 
         <div>
-          {loading ? (
-            <div className="text-center py-4 text-gray-500">Loading...</div>
-          ) : filteredReceivers.length > 0 ? (
-            <div className="overflow-y-auto max-h-[calc(100vh-200px)]">
-              {filteredReceivers.map(r => (
-                <div
-                  key={r.id}
-                  onClick={() => onSelectReceiver(r.id)}
-                  className={`flex items-start gap-3 py-3 border-b border-gray-200 cursor-pointer ${selectedReceiverId === r.id ? 'bg-green-100' : ''}`}
-                >
-                  <img src={r.image || '/default-user.svg'} alt={r.name} width={40} height={40} className="rounded-full object-cover" />
-                  <div className="flex flex-col flex-1">
-                    <div className="flex items-center justify-between">
-                      <div className="font-medium">{r.name}</div>
-                      <div className="text-xs text-gray-500">{r.role}</div>
-                    </div>
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>{r.message}</span>
-                      <span>
-                        {r.delivered ? (
-                          <img src="/bluetick.svg" alt="Delivered" width={16} height={16} />
-                        ) : (
-                          <img src="/reddot.svg" alt="Unread" width={12} height={12} />
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-4 text-gray-500">No receivers found.</div>
-          )}
+          <p className="text-xs uppercase tracking-wide text-gray-400">
+            Nutritionist
+          </p>
+          <p className="text-lg font-semibold text-gray-900">
+            {nutritionist || "—"}
+          </p>
+        </div>
+
+        <div className="mt-auto text-xs text-gray-400">
+          Secure, private communication
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex flex-col w-[70%] p-4 bg-[#F3FFED] rounded-lg">
-        <div className="flex-1 overflow-y-auto p-4 text-black">
-          {loadingMessages ? (
-            <div className="text-center text-gray-500">Loading messages...</div>
-          ) : activeMessages.length === 0 ? (
-            <p className="text-gray-500 text-center">No messages yet. Start the conversation!</p>
+      {/* CHAT PANEL */}
+      <div className="flex flex-col flex-1 bg-white">
+
+        {/* HEADER */}
+        <div className="px-6 py-4 border-b">
+          <p className="text-sm text-gray-500">
+            Conversation with
+          </p>
+          <p className="text-base font-semibold text-gray-900">
+            {nutritionist}
+          </p>
+        </div>
+
+        {/* MESSAGES */}
+        <div className="flex-1 px-6 py-4 overflow-y-auto space-y-4 bg-[#fafafa]">
+          {loading ? (
+            <p className="text-center text-gray-400 text-sm">
+              Loading messages…
+            </p>
+          ) : messages.length === 0 ? (
+            <p className="text-center text-gray-400 text-sm">
+              No messages yet
+            </p>
           ) : (
-            activeMessages.map((msg, index) => {
-              const currentDate = new Date(msg.created_at!);
-              const previousMsg = activeMessages[index - 1];
-              const previousDate = previousMsg ? new Date(previousMsg.created_at!) : null;
-
-              const isNewDay = !previousDate || currentDate.toDateString() !== previousDate.toDateString();
-
-              let dateLabel = currentDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-              const now = new Date();
-              const today = new Date(now.setHours(0, 0, 0, 0));
-              const yesterday = new Date(today);
-              yesterday.setDate(today.getDate() - 1);
-
-              if (currentDate.toDateString() === today.toDateString()) dateLabel = 'Today';
-              else if (currentDate.toDateString() === yesterday.toDateString()) dateLabel = 'Yesterday';
+            messages.map((msg) => {
+              const isIncoming = msg.senderId === nutritionistId;
 
               return (
-                <React.Fragment key={msg.id}>
-                  {isNewDay && (
-                    <div className="text-center text-xs text-gray-600 my-4">
-                      <span className="inline-block bg-gray-200 px-3 py-1 rounded-full">{dateLabel}</span>
-                    </div>
-                  )}
-                  <div className={`mb-3 flex ${msg.sender_id === userId ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[75%] p-3 text-sm shadow-sm ${msg.sender_id === userId ? 'bg-[#DCF8C6] text-black rounded-xl rounded-br-none' : 'bg-white text-black rounded-xl rounded-bl-none'}`}>
-                      <div>{msg.message}</div>
-                      <div className="text-[11px] text-gray-500 mt-1 text-right">{formatTimestamp(msg.created_at)}</div>
-                    </div>
+                <div
+                  key={msg.id}
+                  className={`flex ${isIncoming ? "justify-start" : "justify-end"}`}
+                >
+                  <div
+                    className={`max-w-[70%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                      isIncoming
+                        ? "bg-white border text-gray-800"
+                        : "bg-gray-900 text-white"
+                    }`}
+                  >
+                    {msg.message}
                   </div>
-                </React.Fragment>
+                </div>
               );
             })
           )}
-          <div ref={messagesEndRef} />
         </div>
 
-        {/* Message Input */}
-        <div className="flex gap-3 items-center justify-between p-2 border-t border-gray-300 bg-white rounded-b-lg">
-          <img src="/messageicon.svg" alt="Message icon" width={24} height={24} />
-          <div className="flex justify-between gap-3 bg-[#F7F7FD] border rounded-2xl w-[90%] p-1">
+        {/* INPUT */}
+        <div className="border-t px-4 py-3 bg-white">
+          <div className="flex items-center gap-3">
             <input
-              type="text"
-              value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Type your message..."
-              className="flex-1 bg-transparent outline-none px-4 text-black"
+              value={textInput}
+              onChange={(e) => setTextInput(e.target.value)}
+              placeholder="Write a message…"
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
             />
-            <div className="flex border rounded-full items-center border-black p-1 cursor-pointer">
-              <img src="/attachments.svg" alt="Attachment icon" width={24} height={24} />
-            </div>
+            <button
+              onClick={handleSendMessage}
+              className="px-5 py-3 rounded-xl bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition"
+            >
+              Send
+            </button>
           </div>
-          <button type="button" onClick={handleSendMessage} className="bg-[#4EBA53] border rounded-2xl p-2 cursor-pointer flex items-center justify-center min-w-[40px] min-h-[40px]">
-            <img src="/send-icon.svg" alt="Send" width={24} height={24} />
-          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default ChatSpace;
+export default Messages;

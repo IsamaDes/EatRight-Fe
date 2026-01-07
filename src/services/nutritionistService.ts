@@ -1,8 +1,5 @@
-// src/services/nutritionistService.ts
 import axiosInstance from "../utils/AxiosInstance";
 
-
-// Define the meal interface
 interface Meal {
   timeOfDay: string;
   typeOfMeal: string;
@@ -10,23 +7,20 @@ interface Meal {
   nutritionalContent: string;
 }
 
-// Define the daily meal plan interface
 interface DailyMealPlan {
   dayOfWeek: string;
   meals: Meal[];
 }
 
-// Define the weekly meal plan interface
 interface WeeklyMealPlan {
   weekNumber: number;
   dailyPlans: DailyMealPlan[];
 }
 
-// Main meal plan data interface
 export interface MealPlanData {
   clientId: string;
-  dateRangeStart: string; // ISO string format
-  dateRangeEnd: string; // ISO string format
+  dateRangeStart: string; 
+  dateRangeEnd: string; 
   numberOfWeeks: number;
   healthGoal: string;
   nutritionalRequirement: string;

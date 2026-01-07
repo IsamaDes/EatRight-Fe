@@ -18,7 +18,7 @@ const Home: React.FC = () => {
         className="max-w-2xl"
       >
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
-          Welcome to <span className="text-green-600">EatGood</span> 🌿
+          Welcome to <span className="text-green-600">EatRight</span> 🌿
         </h1>
 
         <p className="text-gray-600 text-lg md:text-xl mb-8 leading-relaxed">
