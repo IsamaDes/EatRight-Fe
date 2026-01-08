@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { initializeSubscriptionPayment, createSubscription } from '../services/subscriptionService';
+import { initializeSubscriptionPayment, createSubscription, InitializeSubscriptionPayload } from '../services/subscriptionService';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getClientProfile } from '../services/clientService';
@@ -108,6 +108,12 @@ const SubscriptionPlans = () => {
 
 
   const handleSubscribe = async (plan: typeof plans[number]) => {
+
+     if (!clientData?.clientId) {
+      console.error('Client clientId provided');
+      return;
+    }
+
     setLoading(true);
     setSubscribingPlan(plan.title);
     const billing = billingDurations[selectedDuration];
@@ -115,13 +121,11 @@ const SubscriptionPlans = () => {
 
     const payload = {
       subscriberId: clientData?.clientId,
-      plan_name: plan.title,
+      planName: plan.title,
       amount: numericAmount,
-      billing_interval: billing.interval,
+      billingInterval: billing.interval,
       currency: 'NGN',
-      billing_cycle_count: billing.count,
-      trial_start_date: undefined,
-      trial_end_date: undefined,
+      billingCycleCount: billing.count,
       metadata: {
         features: plan.features,
       },
@@ -132,15 +136,17 @@ const SubscriptionPlans = () => {
       console.log('Subscription created:', response.id);
       const subscriptionId = response.id;
 
-      if (subscriptionId) {
-        const paymentPayload = {
+      if (!subscriptionId) {
+        throw new Error('Subscription ID missing');
+      }
+
+        const paymentPayload: InitializeSubscriptionPayload = {
           gateway: 'paystack',
-          redirect_url: `${import.meta.env.VITE_PUBLIC_BASE_URL}/payment-success?atn=${accessToken}`,
-          currency: 'NGN',
+          reference: `sub_${Date.now()}`,
           metadata: {
             auto_renew: true,
-          },
-          reference: `sub_${Date.now()}`,
+          },  
+          redirectUrl: `${import.meta.env.VITE_PUBLIC_BASE_URL}/payment-success?atn=${accessToken}`,
         };
 
         const paymentResponse = await initializeSubscriptionPayment(subscriptionId, paymentPayload);
@@ -154,7 +160,6 @@ const SubscriptionPlans = () => {
         } else {
           console.error('Payment URL not found in response');
         }
-      }
       console.log('Subscription created:', response);
     } catch (error) {
       console.error('Error creating subscription:', error);

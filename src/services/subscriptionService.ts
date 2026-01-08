@@ -14,32 +14,29 @@ type BillingInterval = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
 
 export interface CreateSubscriptionPayload {
   subscriberId?: string;
-  plan_name: string;
+  planName: string;
   amount: number;
-  billing_interval: BillingInterval;
+  billingInterval: BillingInterval;
   currency: string;
-  billing_cycle_count: number;
-  trial_start_date?: string;
-  trial_end_date?: string;
+  billingCycleCount: number;
   metadata?: {
     features?: string[];
   };
 }
 
 
-interface SubscriptionPaymentPayload {
+export interface InitializeSubscriptionPayload {
   gateway: string;
-  redirect_url: string;
-  currency: string;
-  metadata: {
-    auto_renew: boolean;
+  reference?: string; 
+  redirectUrl: string; 
+  metadata?: {
+    auto_renew?: boolean; 
   };
-  reference: string;
 }
 
 export const initializeSubscriptionPayment = async (
   subscriptionId: string,
-  payload: SubscriptionPaymentPayload
+  payload: InitializeSubscriptionPayload
 ) => {
   try {
     const response = await axiosInstance.post(
