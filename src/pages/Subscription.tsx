@@ -109,7 +109,7 @@ const SubscriptionPlans = () => {
 
   const handleSubscribe = async (plan: typeof plans[number]) => {
 
-     if (!clientData?.clientId) {
+     if (!clientData?.id) {
       console.error('Client clientId provided');
       return;
     }
@@ -120,7 +120,7 @@ const SubscriptionPlans = () => {
     const numericAmount = Number(plan.price.replace(/,/g, ''));
 
     const payload = {
-      subscriberId: clientData?.clientId,
+      subscriberId: clientData?.id,
       planName: plan.title,
       amount: numericAmount,
       billingInterval: billing.interval,
