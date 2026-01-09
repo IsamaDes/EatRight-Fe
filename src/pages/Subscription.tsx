@@ -148,7 +148,7 @@ const SubscriptionPlans = () => {
 
     console.log('Creating subscription with payload:', payload);
 
-    navigate("/client/subscribe", { replace: true });
+    navigate("/client/subscription", { replace: true });
 
     try {
       const response = await createSubscription(payload);
