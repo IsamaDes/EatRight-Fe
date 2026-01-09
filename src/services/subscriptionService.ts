@@ -30,25 +30,11 @@ export interface InitializeSubscriptionPayload {
   reference?: string; 
   redirectUrl: string; 
   metadata?: {
-    auto_renew?: boolean; 
+    autoRenew?: boolean; 
   };
 }
 
-export const initializeSubscriptionPayment = async (
-  subscriptionId: string,
-  payload: InitializeSubscriptionPayload
-) => {
-  try {
-    const response = await axiosInstance.post(
-      `/subscriptions/${subscriptionId}/initialize-payment`,
-      payload
-    );
-    return response.data;
-  } catch (error) {
-    console.error('Error initializing subscription payment:', error);
-    throw error;
-  }
-};
+
 
 export const getSubscriptions = async (params: SubscriptionQueryParams) => {
   const response = await axiosInstance.get('/subscriptions', {params});

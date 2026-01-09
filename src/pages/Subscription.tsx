@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { initializeSubscriptionPayment, createSubscription, InitializeSubscriptionPayload } from '../services/subscriptionService';
+import { createSubscription,  } from '../services/subscriptionService';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getClientProfile } from '../services/clientService';
 import { ClientData } from './ClientPages/Profile';
+import { useSearchParams } from "react-router-dom";
 
+
+const paymentErrorMessages: Record<string, string> = {
+  PAY_001: "Payment reference was missing. Please try again.",
+  PAY_002: "We could not verify your payment. Please retry.",
+  PAY_003: "Payment was not successful. No charges were applied.",
+  PAY_004: "Subscription record could not be found. Contact support.",
+  PAY_500: "An unexpected error occurred. Please try again later.",
+};
 
 
 const plans = [
@@ -69,6 +78,8 @@ const billingDurations: Record<Duration, { interval: 'monthly' | 'quarterly' | '
 
 const SubscriptionPlans = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const backendErrorCode = searchParams.get("error");
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<Duration>('1 Month');
@@ -77,6 +88,9 @@ const SubscriptionPlans = () => {
 
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const backendErrorMessage =
+    backendErrorCode ? paymentErrorMessages[backendErrorCode] : null;
 
 
   useEffect(() => {
@@ -120,46 +134,40 @@ const SubscriptionPlans = () => {
     const numericAmount = Number(plan.price.replace(/,/g, ''));
 
     const payload = {
-      subscriberId: clientData?.id,
       planName: plan.title,
       amount: numericAmount,
       billingInterval: billing.interval,
-      currency: 'NGN',
       billingCycleCount: billing.count,
+      currency: 'NGN',
+      gateway: 'paystack',  
       metadata: {
         features: plan.features,
+        autoRenew: false,
       },
     };
 
+    console.log('Creating subscription with payload:', payload);
+
+    navigate("/client/subscribe", { replace: true });
+
     try {
       const response = await createSubscription(payload);
-      console.log('Subscription created:', response.id);
-      const subscriptionId = response.id;
+        
 
-      if (!subscriptionId) {
-        throw new Error('Subscription ID missing');
+      if (!response) {
+        throw new Error('Subscription creation failed');
       }
-
-        const paymentPayload: InitializeSubscriptionPayload = {
-          gateway: 'paystack',
-          reference: `sub_${Date.now()}`,
-          metadata: {
-            auto_renew: true,
-          },  
-          redirectUrl: `${import.meta.env.VITE_PUBLIC_BASE_URL}/payment-success?atn=${accessToken}`,
-        };
-
-        const paymentResponse = await initializeSubscriptionPayment(subscriptionId, paymentPayload);
-        console.log('Payment initialized:', paymentResponse);
-        const paymentUrl = paymentResponse.data.authorization_url;
-        console.log("paymenturl", paymentUrl)
-        if (paymentUrl) {
-           navigate("/client/payment-init", {
-           state: { paymentUrl },
-         });
-        } else {
+        const authorizationUrl = response.payment?.data?.authorization_url;
+        if(!authorizationUrl){
           console.error('Payment URL not found in response');
+           throw new Error("Payment URL not found in response")
         }
+
+        console.log('Redirecting to:', authorizationUrl);
+       
+         navigate("/client/payment-init", {
+           state: { authorizationUrl },
+         })
       console.log('Subscription created:', response);
     } catch (error) {
       console.error('Error creating subscription:', error);
@@ -168,6 +176,17 @@ const SubscriptionPlans = () => {
     setLoading(false); 
   }
   };
+
+   if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F8FFF3]">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4 text-green-500" />
+          <p className="text-gray-600">Loading subscription plans...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-[#F8FFF3] justify-center p-6">
@@ -179,6 +198,8 @@ const SubscriptionPlans = () => {
           <h2 className="text-xl font-semibold">Purchase & Subscription</h2>
           <p className="text-sm">Keep track of your subscription details, update your purchase information & control your account payment.</p>
         </div>
+
+       
 
         <div className="flex gap-2 bg-[#EBFAD7] h-[40px] text-[15px] border-transparent rounded-full p-1">
           {durations.map((duration) => (
@@ -197,6 +218,12 @@ const SubscriptionPlans = () => {
         </div>
       </div>
     
+
+     {backendErrorMessage && (
+          <div className="mb-6 rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {backendErrorMessage}
+          </div>
+        )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl">
         {plans.map((plan) => (
