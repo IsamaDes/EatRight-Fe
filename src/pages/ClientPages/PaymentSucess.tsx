@@ -14,13 +14,12 @@ const PaymentSuccess = () => {
     const atn = query.get("atn"); 
     if (!reference) {
       setMessage("Payment reference missing. Redirecting...");
-      setTimeout(() => navigate("/client/subscribe"), 3000);
+      setTimeout(() => navigate("/client/subscription"), 3000);
       return;
     }
 
     const verifyPayment = async () => {
       try {
-        // Call your backend verification endpoint
         const response = await axios.get(
           `https://eat-right-be.onrender.com/subscriptions/verify-payment?reference=${reference}`,
           {
@@ -35,12 +34,12 @@ const PaymentSuccess = () => {
           setTimeout(() => navigate("/client/profile"), 3000);
         } else {
           setMessage("Payment failed. Redirecting to subscription page...");
-          setTimeout(() => navigate("/client/subscribe?failed=true"), 3000);
+          setTimeout(() => navigate("/client/subscription?failed=true"), 3000);
         }
       } catch (error) {
         console.error(error);
         setMessage("Payment verification failed. Redirecting...");
-        setTimeout(() => navigate("/client/subscribe?failed=true"), 3000);
+        setTimeout(() => navigate("/client/subscription?failed=true"), 3000);
       } finally {
         setLoading(false);
       }

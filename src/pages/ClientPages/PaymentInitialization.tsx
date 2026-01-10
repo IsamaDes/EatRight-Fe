@@ -5,20 +5,20 @@ import { useEffect } from "react";
 const PaymentInit = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const paymentUrl = location.state?.paymentUrl;
+  const authorizationUrl = location.state?.authorizationUrl;
 
   useEffect(() => {
-    if (!paymentUrl) {
-      navigate("/client/subscribe");
+    if (!authorizationUrl) {
+      navigate("/client/subscription");
       return;
     }
 
     const timer = setTimeout(() => {
-      window.location.href = paymentUrl;
+      window.location.href = authorizationUrl;
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [paymentUrl, navigate]);
+  }, [authorizationUrl, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
