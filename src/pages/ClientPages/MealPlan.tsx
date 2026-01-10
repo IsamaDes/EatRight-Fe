@@ -83,6 +83,45 @@ const ClientMealPlans: React.FC = () => {
   if (loading) return <p>Loading meal plans...</p>;
   if (error) return <p>Error: {error}</p>;
 
+if (weeklyTables.length === 0) {
+  return (
+    <div className="rounded-2xl border border-gray-100 bg-white p-6">
+
+      {/* HEADER */}
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-900">
+          Meal plan in progress
+        </h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Your nutritionist is setting up your personalized weekly plan.
+        </p>
+      </div>
+
+      {/* SKELETON TABLE */}
+      <div className="space-y-3">
+        {[...Array(5)].map((_, idx) => (
+          <div
+            key={idx}
+            className="grid grid-cols-4 gap-2 rounded-lg border border-gray-100 p-3"
+          >
+            <div className="h-4 w-16 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-100" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-100" />
+            <div className="h-4 w-full animate-pulse rounded bg-gray-100" />
+          </div>
+        ))}
+      </div>
+
+      {/* FOOTER */}
+      <div className="mt-6 text-xs text-gray-400">
+        You’ll see your meals here as soon as the plan is ready.
+      </div>
+    </div>
+  );
+}
+
+
+
   return (
     <div className="flex flex-col bg-white gap-4 p-4 rounded-2xl">
 
