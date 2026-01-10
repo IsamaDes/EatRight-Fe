@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { createSubscription,  } from '../services/subscriptionService';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -78,7 +78,7 @@ const billingDurations: Record<Duration, { interval: 'monthly' | 'quarterly' | '
 
 const SubscriptionPlans = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const backendErrorCode = searchParams.get("error");
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -122,6 +122,7 @@ const SubscriptionPlans = () => {
 
 
   const handleSubscribe = async (plan: typeof plans[number]) => {
+    setSearchParams({});
 
      if (!clientData?.id) {
       console.error('Client clientId provided');
@@ -148,7 +149,6 @@ const SubscriptionPlans = () => {
 
     console.log('Creating subscription with payload:', payload);
 
-    navigate("/client/subscription", { replace: true });
 
     try {
       const response = await createSubscription(payload);
