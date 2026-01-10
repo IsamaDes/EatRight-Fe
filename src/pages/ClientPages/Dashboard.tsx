@@ -196,7 +196,7 @@ const ClientDashboard: React.FC = () => {
                   Here’s your nutrition plan for today.
                 </p>
               </div>
-             {clientData?.subscription?.planName ?  (<button
+             {clientData?.activeSubscription?.planName ?  (<button
                 onClick={handleViewMealPlan}
                 className="border rounded-md px-3 py-2 text-sm"
               >
