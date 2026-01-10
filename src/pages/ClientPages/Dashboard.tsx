@@ -35,6 +35,7 @@ const ClientDashboard: React.FC = () => {
   const [waterIntake, setWaterIntake] = useState<number>(6);
   const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
 
+
   /* --------------------------- Derived values --------------------------- */
 
   const totalCalories = useMemo(
@@ -52,7 +53,16 @@ const ClientDashboard: React.FC = () => {
           getClientMealPlans()
         ]);
 
-        setClientData(profileResponse.data);
+        console.log("clientData", profileResponse.data)
+
+        const profile = profileResponse.data;
+
+        const activeSubscription =
+        profile.subscription?.find((sub: any) => sub.status === "active") || null;
+
+        setClientData( {
+          ...profile, 
+          activeSubscription,});
 
         const todayKey = new Date().toDateString();
         const mealsForToday: DashboardMeal[] = [];
@@ -130,7 +140,7 @@ const ClientDashboard: React.FC = () => {
               <div>
                 <p className="text-gray-500 text-xs">Current plan</p>
                 <p className="font-medium">
-                  {clientData?.subscription?.planName || 'Free plan'}
+                  {clientData?.activeSubscription?.planName || 'Free plan'}
                 </p>
               </div>
             </div>

@@ -27,6 +27,7 @@ export interface ClientData {
   age: number | null;
   healthGoal: string | null;
   subscription: ClientSubscription | null;
+  activeSubscription?: any | null;
   assignedNutritionist: AssignedNutritionistProfile | null;
 }
 
